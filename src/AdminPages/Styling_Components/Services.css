@@ -1,0 +1,85 @@
+.service-add {
+  display: flex;
+  justify-content: space-between; /* Pushes h1 to the left and button to the right */
+  align-items: center; /* Vertically centers both the h1 and button */
+  padding: 10px;
+}
+
+.service-add h1 {
+  flex: 0 0 75%; /* h1 takes 75% of the space */
+  margin: 0; /* Remove default margin */
+}
+
+.service-add button {
+  flex: 0 0 25%; /* Button takes 25% of the space */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center; /* Centers text inside button */
+}
+
+.service-add button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+.services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between the boxes */
+}
+
+.service-box {
+  background-color: rgb(113, 160, 192);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: calc(20% - 20px); /* Adjust width to fit 4-5 items per row with margin */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.service-box:hover {
+  transform: scale(1.05); /* Slightly enlarge the box on hover */
+}
+
+.service-box h2 {
+  margin-top: 0; /* Remove top margin */
+}
+
+.service-box p {
+  margin: 5px 0; /* Adjust margin for paragraphs */
+}
+
+.service-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+}
+
+.modify-btn {
+  background-color: #007bff;
+}
+
+.modify-btn:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+.terminate-btn {
+  background-color: #dc3545; /* Change color to indicate termination */
+}
+
+.terminate-btn:hover {
+  background-color: #c82333; /* Darker shade for hover effect */
+}
