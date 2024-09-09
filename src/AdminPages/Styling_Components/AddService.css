@@ -1,0 +1,105 @@
+/* Container for the form */
+.internet-details-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title */
+  .internet-details-form h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Form fields */
+  .internet-details-form form div {
+    margin-bottom: 15px;
+  }
+  
+  .internet-details-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .internet-details-form input[type="text"],
+  .internet-details-form input[type="number"],
+  .internet-details-form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  
+  /* Input field focus */
+  .internet-details-form input:focus,
+  .internet-details-form select:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  /* Submit button */
+  .btn.submit-btn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn.submit-btn:hover {
+    background-color: #45a049;
+  }
+  
+  /* Disabled button state */
+  .btn.submit-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  /* Error message */
+  .error {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  /* Aligning the form elements */
+  .internet-details-form form div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .internet-details-form form label {
+    margin-bottom: 5px;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 600px) {
+    .internet-details-form {
+      padding: 15px;
+    }
+  
+    .internet-details-form h1 {
+      font-size: 20px;
+    }
+  
+    .btn.submit-btn {
+      font-size: 14px;
+    }
+  }
+  
