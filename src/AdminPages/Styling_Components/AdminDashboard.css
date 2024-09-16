@@ -1,0 +1,69 @@
+/* AdminDashboard.css */
+.admin-home-container {
+  font-family: Arial, sans-serif;
+}
+
+.dashboard-navbar {
+  background-color: black;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  position: fixed;
+  top: 0; /* Stick to the top */
+  left: 0; /* Float to the right */
+  width: 20%; /* Adjust the width as needed */
+  z-index: 1000; /* Ensure it stays above other content */
+  padding: 1%; /* Add some padding for better appearance */
+  margin-top: 8%;
+  margin-left: 1%;
+}
+
+.dashboard-navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-navbar li {
+  margin: 5px 0; /* Add some margin between the links */
+}
+
+.dashboard-navbar a {
+  display: block; /* Ensure links are block-level to stack vertically */
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  background-color:black; /* Background color of the link */
+}
+
+.dashboard-navbar a:hover {
+  background-color: #ddd;
+  color: #5d5c5c;
+}
+
+.section {
+  padding: 20px;
+  margin-left: 20%; /* Adjust margin-left to avoid content overlap with the fixed navbar */
+  margin-top: 3%; /* Adjust margin-top to avoid content overlap with the fixed navbar */
+  margin-bottom:5%;
+  text-align: center; /* Center the content inside the section */
+}
+
+h2 {
+  margin-top: 0;
+  text-align: center; /* Center the h2 element */
+}
+/* AdminDashboard.css */
+
+.highlight {
+  background-color: rgb(246, 246, 171); /* Change this color as needed */
+  transition: background-color 0.5s ease; /* Smooth transition */
+}
+
+/* Reduced size of graphs and text */
+.internet-graph, .tv-graph {
+  width: 80%;  /* Reduce width to 70% */
+  height: 35%; /* Reduce height to 25% */
+  margin: 0 auto; /* Center the graphs horizontally */
+}
+

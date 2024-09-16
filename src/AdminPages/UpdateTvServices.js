@@ -33,7 +33,7 @@ function UpdateTvServices() {
         serviceId,
         serviceName:tvService.serviceName,
         monthlyCost:tvService.monthlyCost,
-        benifits:tvService.benifits,
+        benefits:tvService.benefits,
         description:tvService.description,
         criteria:tvService.criteria,
         serviceType:tvService.serviceType
@@ -79,8 +79,8 @@ function UpdateTvServices() {
                       <label>
                           Benifits:
                           <textarea
-                              value={tvService.benifits}
-                              onChange={(e) => setTvService({ ...tvService, benifits: e.target.value })} />
+                              value={tvService.benefits}
+                              onChange={(e) => setTvService({ ...tvService, benefits: e.target.value })} />
                       </label>
                       <label>
                           Criteria:
@@ -89,11 +89,17 @@ function UpdateTvServices() {
                               onChange={(e) => setTvService({ ...tvService, criteria: e.target.value })} />
                       </label>
                       <label>
-                          Monthly Cost:
+                          Cost:Rs.
                           <textarea
-                              value={tvService.monthlyCost}
+                              value={tvService.cost}
                               onChange={(e) => setTvService({ ...tvService, monthlyCost: e.target.value })} />
                       </label>
+                      <label>
+              Validity(in days):
+              <textarea
+                value={tvService.validity}
+                onChange={(e) => setTvService({ ...tvService, criteria: e.target.value })} />
+            </label>
                       {/* Add other fields as necessary */}
                       <button type="button" onClick={handleSaveTvService}>Save Changes</button>
                   </form>

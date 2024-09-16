@@ -146,7 +146,7 @@ function AddInternetService() {
         </div>
 
         <div>
-          <label>Monthly Cost:</label>
+          <label>Cost:</label>Rs.
           <input
             type="text"
             name="monthlyCost"
