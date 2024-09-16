@@ -1,0 +1,88 @@
+.slider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.feedback-slider {
+  position: relative;
+  width: 75%;
+  height: auto; /* Allow dynamic height based on content */
+  overflow: hidden;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 0 20px; /* Adds space between the slider and the control buttons */
+  color:white;
+  background-color: rgb(94, 94, 205);
+}
+
+.feedback-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.control-button {
+  background-color:black!important;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.control-button:hover {
+  background-color: black;
+}
+
+.feedback-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.feedback-item {
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: auto; /* Automatically adjust height based on content */
+  min-height: 300px; /* Set a minimum height */
+}
+
+.user-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  object-fit: cover;
+}
+
+.feedback-summary {
+  text-align: center;
+}
+
+.feedback-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  z-index: 1000;
+  visibility: visible;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}

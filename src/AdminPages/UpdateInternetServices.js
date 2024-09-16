@@ -36,9 +36,10 @@ function UpdateInternetServices() {
       serviceType:internetService.serviceType,
       serviceDownloadSpeed:internetService.serviceDownloadSpeed,
       serviceUploadSpeed:internetService.serviceUploadSpeed,
-      benifits:internetService.benefits,
+      benefits:internetService.benefits,
       monthlyCost:internetService.monthlyCost,
-      criteria:internetService.criteria
+      criteria:internetService.criteria,
+      validity:internetService.validity,
     }
     axios.patch(`http://localhost:8082/admin/api/internet-service`,updatedData,{withCredentials:true})
       .then(response => {
@@ -61,7 +62,7 @@ function UpdateInternetServices() {
           <form>
             <label>
               Service Name:
-              <input
+              <input 
                 type="text"
                 value={internetService.serviceName}
                 onChange={(e) => setInternetService({ ...internetService, serviceName: e.target.value })} disabled/>
@@ -79,21 +80,21 @@ function UpdateInternetServices() {
                 onChange={(e) => setInternetService({ ...internetService, serviceType: e.target.value })} disabled/>
             </label>
             <label>
-              Download Speed:
+              Download Speed(Mbps):
               <textarea
                 value={internetService.serviceDownloadSpeed}
                 onChange={(e) => setInternetService({ ...internetService, serviceDownloadSpeed: e.target.value })} />
             </label>
             <label>
-              Upload Speed:
+              Upload Speed(Mbps):
               <textarea
                 value={internetService.serviceUploadSpeed}
                 onChange={(e) => setInternetService({ ...internetService, serviceUploadSpeed: e.target.value })} />
             </label>
             <label>
-              Monthly Cost:
+              Cost:Rs.
               <textarea
-                value={internetService.monthlyCost}
+                value={internetService.cost}
                 onChange={(e) => setInternetService({ ...internetService, monthlyCost: e.target.value })} />
             </label>
             <label>
@@ -106,6 +107,12 @@ function UpdateInternetServices() {
               Criteria:
               <textarea
                 value={internetService.criteria}
+                onChange={(e) => setInternetService({ ...internetService, criteria: e.target.value })} />
+            </label>
+            <label>
+              Validity(in days):
+              <textarea
+                value={internetService.validity}
                 onChange={(e) => setInternetService({ ...internetService, criteria: e.target.value })} />
             </label>
             {/* Add other fields as necessary */}

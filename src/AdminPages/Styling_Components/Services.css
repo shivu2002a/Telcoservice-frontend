@@ -1,50 +1,51 @@
-.service-add {
+/* Container for the 'Add Service' button */
+.add-service-container {
   display: flex;
-  justify-content: space-between; /* Pushes h1 to the left and button to the right */
-  align-items: center; /* Vertically centers both the h1 and button */
-  padding: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.service-add h1 {
-  flex: 0 0 75%; /* h1 takes 75% of the space */
-  margin: 0; /* Remove default margin */
+/* Service section styling */
+.services-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between rows */
+  margin-bottom: 20px;
+  background-color: white;
 }
 
-.service-add button {
-  flex: 0 0 25%; /* Button takes 25% of the space */
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: center; /* Centers text inside button */
+/* Flex container for services list and View More button */
+.services-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between elements */
 }
 
-.service-add button:hover {
-  background-color: #0056b3; /* Darker shade for hover effect */
-}
-
+/* Service grid styling */
 .services-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* Space between the boxes */
+  gap: 20px;
+  padding: 20px;
 }
 
+/* Individual service box */
 .service-box {
-  background-color: rgb(113, 160, 192);
+  background-color:white;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
-  width: calc(20% - 20px); /* Adjust width to fit 4-5 items per row with margin */
+  width: calc(25% - 20px); /* Ensure 4 boxes per row with gap */
+  box-sizing: border-box; /* Include padding and border in width */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  transition: transform 0.3s ease; /* Smooth scaling transition */
 }
 
 .service-box:hover {
   transform: scale(1.05); /* Slightly enlarge the box on hover */
 }
 
+/* Title and paragraph styling inside the service box */
 .service-box h2 {
   margin-top: 0; /* Remove top margin */
 }
@@ -53,33 +54,152 @@
   margin: 5px 0; /* Adjust margin for paragraphs */
 }
 
+/* Buttons inside the service box */
 .service-buttons {
   margin-top: 20px;
   display: flex;
   gap: 10px;
 }
 
-.btn {
+/* View More / Show Less button container for Internet and TV services */
+.view-more-btn-container {
+  width: calc(25% + 30px); /* Match the width of a service box */
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transition: transform 0.3s ease;
+  box-sizing: border-box; /* Include padding and border in width */
+  
+}
+
+/* View More button styling */
+.view-more-btn-container:hover .view-more-btn {
+  color: white;
+  background-color: rgba(142, 2, 2, 0.678)!important;
+}
+
+.view-more-btn {
+  width: 80%;
+  height: 50px;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
+  background: transparent!important;
+  color: white;
   cursor: pointer;
-  color: #fff;
   font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box; /* Include padding and border in width */
 }
 
+/* Modify button inside the service box */
 .modify-btn {
-  background-color: #007bff;
+  background-color: #007bff!important;
 }
 
 .modify-btn:hover {
-  background-color: #0056b3; /* Darker shade for hover effect */
+  background-color: #0056b3;
 }
 
+/* Terminate button inside the service box */
 .terminate-btn {
-  background-color: #dc3545; /* Change color to indicate termination */
+  background-color: #dc3545!important;
 }
 
 .terminate-btn:hover {
-  background-color: #c82333; /* Darker shade for hover effect */
+  background-color: #c82333!important;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s linear;
+}
+
+.popup-overlay.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Popup Content */
+.popup-content {
+  background: rgb(67, 67, 150);
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  color: white;
+}
+
+/* Close button styling */
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-popup:hover {
+  background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .service-box {
+    width: calc(25% - 20px); /* 3 boxes per row */
+  }
+
+  .view-more-btn-container {
+    width: calc(25% - 20px);
+  }
+}
+
+@media (max-width: 900px) {
+  .service-box {
+    width: calc(50% - 20px); /* 2 boxes per row */
+  }
+
+  .view-more-btn-container {
+    width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 600px) {
+  .service-box {
+    width: 100%; /* 1 box per row */
+  }
+
+  .view-more-btn-container {
+    width: 100%;
+    height: 200px;
+  }
+
+  .popup-content {
+    width: 95%;
+  }
 }

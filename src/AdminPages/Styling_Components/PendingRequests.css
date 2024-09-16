@@ -1,92 +1,105 @@
+/* Styling for the table container */
+.pending-requests {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  margin: 3%;
+  max-width: 100%; /* Ensures container doesn't overflow */
+  overflow-x: auto; /* Adds horizontal scroll if table overflows */
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Adds a shadow to the container */
+  border-radius: 8px;
+}
+
 /* Styling for the table */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 1em;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  table th, table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  table thead {
-    background-color: #007bff;
-    color: #ffffff;
-  }
-  
-  table tbody tr:nth-child(even) {
-    background-color: #f3f3f3;
-  }
-  
-  table tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Button styling */
-  button {
-    padding: 8px 12px;
-    font-size: 0.9em;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 8px;
-    margin-bottom: 10px;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  button:hover:enabled {
-    background-color: #0056b3;
-    color: #fff;
-  }
-  
-  button:enabled {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  /* Approve button styling */
-  button.approve-btn {
-    background-color: #28a745;
-  }
-  
-  button.approve-btn:hover:enabled {
-    background-color: #218838;
-  }
-  
-  /* Disapprove button styling */
-  button.disapprove-btn {
-    background-color: #dc3545;
-  }
-  
-  button.disapprove-btn:hover:enabled {
-    background-color: #c82333;
-  }
-  
-  /* Page title styling */
-  h1 {
-    text-align: center;
-    margin-top: 20px;
-    color: #333;
-  }
-  
-  /* General layout for loading and error messages */
-  .loading,
-  .error {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 1.2em;
-  }
-  
-  .error {
-    color: red;
-  }
-  
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1em;
+  font-family: Arial, sans-serif;
+}
+
+table th, table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table thead {
+  background-color: rgb(94, 94, 205);
+  color: #ffffff;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f3f3f3;
+}
+
+table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Button styling */
+button {
+  padding: 8px 12px;
+  font-size: 0.9em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-bottom: 10px;
+  background-color: white;
+  color: black;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:hover:enabled {
+  background-color: black;
+  color: white;
+}
+
+button:enabled {
+  background-color: white;
+  color: black;
+}
+
+/* Approve button styling */
+button.approve-btn {
+  background-color: #28a745;
+}
+
+button.approve-btn:hover:enabled {
+  background-color: #218838;
+}
+
+/* Disapprove button styling */
+button.disapprove-btn {
+  background-color: #dc3545;
+}
+
+button.disapprove-btn:hover:enabled {
+  background-color: #c82333;
+}
+
+/* Page title styling */
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  color: black;
+}
+
+/* General layout for loading and error messages */
+.loading,
+.error {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+.error {
+  color: red;
+}

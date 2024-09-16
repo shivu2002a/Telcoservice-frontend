@@ -1,12 +1,11 @@
-// ProtectedRoute.js
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ isAdmin, children }) => {
-  if (!isAdmin) {
-    // Redirect to login if not an admin
+const ProtectedRoute = ({ isAdmin, isUser, children }) => {
+  if (!isAdmin && !isUser) {
+    // Redirect to login if neither admin nor user
     return <Navigate to="/login" replace />;
   }
+
   return children;
 };
 

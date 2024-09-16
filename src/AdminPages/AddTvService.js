@@ -119,7 +119,7 @@ function AddTvService() {
         </div>
 
         <div>
-          <label>Monthly Cost:</label>
+          <label>Cost:</label>RS.
           <input
             type="text"
             name="monthlyCost"

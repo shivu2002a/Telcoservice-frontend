@@ -1,151 +1,182 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import axios from 'axios';
-import './Styling_Components/Services.css';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import styles from './Styling_Components/Services.css';
+
+// Lazy load the ServiceList and Popup components
+const ServicesList = React.lazy(() => import('./ServicesList'));
+const Popup = React.lazy(() => import('./Popup'));
+
 function ManageServices() {
   const [internetServices, setInternetServices] = useState([]);
   const [tvServices, setTvServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [displayedInternetCount, setDisplayedInternetCount] = useState(5);
+  const [displayedTvCount, setDisplayedTvCount] = useState(5);
+  const [selectedService, setSelectedService] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch internet services
   useEffect(() => {
-    axios.get(`http://localhost:8082/admin/api/internet-service`,{withCredentials:true})
+    axios
+      .get(`http://localhost:8082/admin/api/internet-service`, { withCredentials: true })
       .then(response => {
         setInternetServices(response.data);
       })
       .catch(error => {
-        console.error("There was an error fetching the internet services!", error);
         setError(error.message);
       });
   }, []);
 
-  // Fetch TV services
   useEffect(() => {
-    axios.get(`http://localhost:8082/admin/api/tv-service`,{withCredentials:true})
+    axios
+      .get(`http://localhost:8082/admin/api/tv-service`, { withCredentials: true })
       .then(response => {
         setTvServices(response.data);
         setLoading(false);
       })
       .catch(error => {
-        console.error("There was an error fetching the TV services!", error);
         setError(error.message);
         setLoading(false);
       });
   }, []);
 
-  const handleModifyInternetService = (serviceId) => {
-    // Implement modify logic here
-    navigate(`/admin/updateInternet`,{state:{serviceId}});
+  const handleModifyInternetService = serviceId => {
+    navigate(`/admin/updateInternet`, { state: { serviceId } });
   };
 
-  const handleTerminateInternetService = (serviceId) => {
-    // Implement terminate logic here
-    const confirmTermination = window.confirm("Are you sure you want to terminate this service?");
-
+  const handleTerminateInternetService = serviceId => {
+    const confirmTermination = window.confirm('Are you sure you want to terminate this service?');
     if (confirmTermination) {
-      // If confirmed, send request to terminate the service
-      axios.delete(`http://localhost:8082/admin/api/internet-service?id=${serviceId}`,{withCredentials:true})
-        .then(response => {
-          console.log("Service terminated:", response.data);
-          // Optionally refresh the page or update the state to reflect the change
-          alert("Service successfully terminated.");
-          navigate(`/admin/manageServices`);
-          // You can also implement logic to update the UI here
+      axios
+        .delete(`http://localhost:8082/admin/api/internet-service?id=${serviceId}`, { withCredentials: true })
+        .then(() => {
+          alert('Service successfully terminated.');
+          setInternetServices(prevServices => prevServices.filter(service => service.serviceId !== serviceId));
         })
-        .catch(error => {
-          console.error("There was an error terminating the service!", error);
-          alert("Error terminating service.");
+        .catch(() => {
+          alert('Error terminating service.');
         });
-    } else {
-      // If the user cancels, just log or handle accordingly
-      console.log("Termination canceled.");
     }
   };
 
-  const handleModifyTvService = (serviceId) => {
-    // Implement modify logic here
-    navigate(`/admin/updateTv`,{state:{serviceId}});
+  const handleModifyTvService = serviceId => {
+    navigate(`/admin/updateTv`, { state: { serviceId } });
   };
 
-  const handleTerminateTvService = (serviceId) => {
-    // Implement terminate logic here
-    const confirmTermination = window.confirm("Are you sure you want to terminate this service?");
-
+  const handleTerminateTvService = serviceId => {
+    const confirmTermination = window.confirm('Are you sure you want to terminate this service?');
     if (confirmTermination) {
-      // If confirmed, send request to terminate the service
-      axios.delete(`http://localhost:8082/admin/api/tv-service?id=${serviceId}`,{withCredentials:true})
-        .then(response => {
-          console.log("Service terminated:", response.data);
-          // Optionally refresh the page or update the state to reflect the change
-          alert("Service successfully terminated");
-          navigate(`/admin/home`);
+      axios
+        .delete(`http://localhost:8082/admin/api/tv-service?id=${serviceId}`, { withCredentials: true })
+        .then(() => {
+          alert('Service successfully terminated.');
+          setTvServices(prevServices => prevServices.filter(service => service.serviceId !== serviceId));
         })
-        .catch(error => {
-          console.error("There was an error terminating the service!", error);
-          alert("Error terminating service.");
+        .catch(() => {
+          alert('Error terminating service.');
         });
-    } else {
-      // If the user cancels, just log or handle accordingly
-      console.log("Termination canceled.");
     }
   };
 
-  const handleAddService=(serviceType)=>{
-    if(serviceType==="internet")
-      navigate(`/admin/addInternetService`);
-    if(serviceType==="tv")
-    navigate(`/admin/addTvService`);
+  const handleAddService = serviceType => {
+    if (serviceType === 'internet') navigate(`/admin/addInternetService`);
+    if (serviceType === 'tv') navigate(`/admin/addTvService`);
+  };
+
+  const handleServiceClick = service => {
+    setSelectedService(service);
+  };
+
+  const closePopup = () => {
+    setSelectedService(null);
+  };
+
+  const activeInternetServices = internetServices.filter(service => service.active);
+  const activeTvServices = tvServices.filter(service => service.active);
+
+  const showMoreInternetServices = () => {
+    setDisplayedInternetCount(activeInternetServices.length);
+  };
+
+  const showLessInternetServices = () => {
+    setDisplayedInternetCount(5);
+  };
+
+  const showMoreTvServices = () => {
+    setDisplayedTvCount(activeTvServices.length);
+  };
+
+  const showLessTvServices = () => {
+    setDisplayedTvCount(5);
   };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+  const displayedInternetServices = activeInternetServices.slice(0, displayedInternetCount);
+  const displayedTvServices = activeTvServices.slice(0, displayedTvCount);
+
   return (
     <>
-      <div className="services-container">
-        <div className="service-add">
-          <h1>Internet Services</h1> 
-          <button onClick={() => handleAddService("internet")} className="btn modify-btn">Add Internet Service</button>
+      <div className={styles}>
+        <div className="container">
+          <div className="add-service-container">
+            <button onClick={() => handleAddService('internet')} className="btn btn-primary">
+              Add Internet Service
+            </button>
           </div>
-        <div className="services-grid">
-          {internetServices.map(service => (
-            service.active && ( // Check if the service is active
-              <div className="service-box" key={service.serviceId}>
-                <h2>{service.serviceName}</h2>
-                <p><strong>Description:</strong> {service.description}</p>
-                <p><strong>Service Type:</strong> {service.serviceType}</p>
-                <p><strong>Download Speed:</strong> {service.serviceDownloadSpeed} Mbps</p>
-                <p><strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
-                <p><strong>Monthly Cost:</strong> ${service.monthlyCost}</p>
-                <div className="service-buttons">
-                  <button onClick={() => handleModifyInternetService(service.serviceId)} className="btn modify-btn">Modify</button>
-                  <button onClick={() => handleTerminateInternetService(service.serviceId)} className="btn terminate-btn">Terminate</button>
-                </div>
-              </div>
-            )
-          ))}
-        </div>
-          <div className="service-add">
-        <h1>TV Services</h1>
-        <button onClick={() => handleAddService("tv")} className="btn modify-btn">Add Tv Service</button>
-        </div>
-        <div className="services-grid">
-          {tvServices.map(service => service.active && (
-            <div className="service-box" key={service.serviceId}>
-              <h2>{service.serviceName}</h2>
-              <p><strong>Description:</strong> {service.description}</p>
-              <p><strong>Service Type:</strong> {service.serviceType}</p>
-              <p><strong>Monthly Cost:</strong>${service.monthlyCost}</p>
-              <div className="service-buttons">
-                <button onClick={() => handleModifyTvService(service.serviceId)} className="btn modify-btn">Modify</button>
-                <button onClick={() => handleTerminateTvService(service.serviceId)} className="btn terminate-btn">Terminate</button>
-              </div>
+
+          
+          <div className="services-section">
+          <h1>Available Internet Services</h1>
+            <div className="services-container">
+              <Suspense fallback={<div>Loading Services...</div>}>
+                <ServicesList
+                  services={displayedInternetServices}
+                  onModify={handleModifyInternetService}
+                  onTerminate={handleTerminateInternetService}
+                  handleServiceClick={handleServiceClick}
+                  onViewMore={showMoreInternetServices}
+                  onShowLess={showLessInternetServices}
+                  hasMore={displayedInternetCount < activeInternetServices.length}
+                  serviceType="internet"
+                />
+              </Suspense>
             </div>
-          ))}
+          </div>
+
+          <div className="add-service-container">
+            <button onClick={() => handleAddService('tv')} className="btn btn-primary">
+              Add TV Service
+            </button>
+          </div>
+
+          <div className="services-section">
+          <h1>Available TV Services</h1>
+            <div className="services-container">
+              <Suspense fallback={<div>Loading Services...</div>}>
+                <ServicesList
+                  services={displayedTvServices}
+                  onModify={handleModifyTvService}
+                  onTerminate={handleTerminateTvService}
+                  handleServiceClick={handleServiceClick}
+                  onViewMore={showMoreTvServices}
+                  onShowLess={showLessTvServices}
+                  hasMore={displayedTvCount < activeTvServices.length}
+                  serviceType="tv"
+                />
+              </Suspense>
+            </div>
+          </div>
+
+          {/* Lazy Loaded Popup Component */}
+          <Suspense fallback={<div>Loading Popup...</div>}>
+            {selectedService && <Popup service={selectedService} closePopup={closePopup} />}
+          </Suspense>
         </div>
-      </div></>
+      </div>
+    </>
   );
 }
 
