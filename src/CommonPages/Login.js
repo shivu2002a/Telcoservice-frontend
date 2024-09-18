@@ -3,13 +3,22 @@ import axios from 'axios';
 import './Styling_Components/Login.css';
 import { useNavigate, Link, Outlet } from 'react-router-dom';
 import TelstraLogo from '../Images/Telstra.jfif';
+import BackgroundImage from '../Images/Background.jpg';
 
 const Login = ({ setIsUser, setIsAdmin }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
+  const backgroundStyle = {
+    backgroundImage: `url(${BackgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
+    height: '100vh', // Ensure the background covers the full viewport height
+    width: '100vw',  // Ensure the background covers the full viewport width
+};
   // Check localStorage on page load to persist login state
   useEffect(() => {
     const isAdmin = localStorage.getItem('isAdmin');
@@ -83,6 +92,7 @@ const Login = ({ setIsUser, setIsAdmin }) => {
 
   return (
     <>
+    <div style={backgroundStyle}>
       <nav className="navbar">
         <div className='logo'>
           <img src={TelstraLogo} alt="Logo" className="navbar-image" />
@@ -119,11 +129,12 @@ const Login = ({ setIsUser, setIsAdmin }) => {
               required
             />
           </div>
-          <button type="submit">Login</button>
+          <button type="submit" className="submit-btn">Login</button>
           <p className="login-link">
             Don't have an account? <Link to="/signup">Sign Up</Link>
           </p>
         </form>
+      </div>
       </div>
     </>
   );

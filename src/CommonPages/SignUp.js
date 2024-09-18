@@ -3,8 +3,18 @@ import axios from 'axios';
 import './Styling_Components/SignUp.css'; // Optional: for styling
 import { useNavigate, Link, Outlet } from 'react-router-dom';
 import TelstraLogo from '../Images/Telstra.jfif';
+import BackgroundImage from '../Images/Background.jpg';
 
 function SignUp() {
+  const backgroundStyle = {
+    backgroundImage: `url(${BackgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
+    height: '100%', // Ensure the background covers the full viewport height
+    width: '100vw',  // Ensure the background covers the full viewport width
+};
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -85,6 +95,7 @@ function SignUp() {
 
   return (
     <>
+    <div style={backgroundStyle}>
       <nav className="navbar">
         <div className='logo'>
           <img src={TelstraLogo} alt="Logo" className="navbar-image" />
@@ -228,6 +239,7 @@ function SignUp() {
             Already have an account? <Link to="/login">Login here</Link>
           </p>
         </form>
+      </div>
       </div>
     </>
   );

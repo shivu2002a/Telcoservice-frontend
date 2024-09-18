@@ -2,9 +2,17 @@ import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import './Styling_Components/App.css';
 import TelstraLogo from '../Images/Telstra.jfif';
-import Background from '../Images/Background.jpg';
-
+import BackgroundImage from '../Images/Background.jpg';
 function App() {
+  const backgroundStyle = {
+    backgroundImage: `url(${BackgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
+    height: '100vh', // Ensure the background covers the full viewport height
+    width: '100vw',  // Ensure the background covers the full viewport width
+};
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -25,7 +33,7 @@ function App() {
 
   return (
     <>
-    <div style={{ backgroundImage: `url(${Background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', height: '100%'}}>
+    <div style={backgroundStyle}>
       <nav className="navbar" id="top-navbar">
         <div className='logo'>
           <img src={TelstraLogo} alt="Logo" className="navbar-image" />

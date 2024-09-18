@@ -2,10 +2,21 @@ import React from 'react';
 import './Styling_Components/App.css';
 import { Link,Outlet } from 'react-router-dom';
 import TelstraLogo from '../Images/Telstra.jfif';
+import BackgroundImage from '../Images/Background.jpg';
 function Home()
 {
+  const backgroundStyle = {
+    backgroundImage: `url(${BackgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
+    height: '100vh', // Ensure the background covers the full viewport height
+    width: '100vw',  // Ensure the background covers the full viewport width
+};
     return(
         <>
+        <div style={backgroundStyle}>
         <nav class="navbar">
           <div className='logo'>
         <img src={TelstraLogo} alt="Logo" className="navbar-image" />
@@ -25,6 +36,7 @@ function Home()
       </nav>
 
       <Outlet />
+      </div>
       </>
     )
 }

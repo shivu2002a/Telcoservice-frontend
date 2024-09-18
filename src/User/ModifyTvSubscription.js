@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 const ModifyTvSubscription = () => {
     const [filteredServices, setFilteredServices] = useState([]);
     const [userId, setUserId] = useState(null);
+    const [currentService, setCurrentService] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const location = useLocation();
@@ -33,7 +34,6 @@ const ModifyTvSubscription = () => {
             setError(null);
 
             try {
-                // Fetch availed TV services
                 const availedResponse = await axios.get('http://localhost:8082/user/api/subscribed-services', {
                     params: { userId },
                     withCredentials: true,
@@ -42,12 +42,13 @@ const ModifyTvSubscription = () => {
                 const { tvServicesAvailed } = availedResponse.data;
 
                 if (tvServicesAvailed.length > 0) {
-                    // Filter availed services based on selectedServiceName
+                    const current = tvServicesAvailed.find(service => service.tvService.serviceName === selectedServiceName);
+                    setCurrentService(current);
+
                     const filteredAvailedServices = tvServicesAvailed.filter(
                         (service) => service.tvService.serviceName === selectedServiceName
                     );
 
-                    // Fetch filtered TV services
                     const servicePromises = filteredAvailedServices.map(async (service) => {
                         const servicesResponse = await axios.get('http://localhost:8082/user/api/tv-service/other', {
                             params: {
@@ -60,7 +61,6 @@ const ModifyTvSubscription = () => {
                         return servicesResponse.data;
                     });
 
-                    // Resolve all promises and flatten the results
                     const allFilteredServices = (await Promise.all(servicePromises)).flat();
                     setFilteredServices(allFilteredServices);
                 } else {
@@ -77,33 +77,59 @@ const ModifyTvSubscription = () => {
         fetchFilteredServices();
     }, [userId, selectedServiceName]);
 
-    const handleSubscribe = async (serviceId) => {
+    const handleSubscribe = async (newService) => {
+        if (!currentService) {
+            setError('Current service not found.');
+            return;
+        }
+
         try {
-            const apiUrl = `http://localhost:8082/api/tv-services/subscribe`;
+            console.log('Terminating old service...');
+            await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms delay
 
-            await axios.post(
-                apiUrl,
-                null,
-                {
-                    params: { serviceId },
-                    withCredentials: true,
-                }
-            );
+            const apiUrl = `http://localhost:8082/user/api/tv-service`;
+            const requestBody = {
+                startDate: currentService.startDate,
+                endDate: currentService.endDate || null, // or the actual end date
+                oldServiceId: currentService.tvService.serviceId,
+                newServiceId: newService.serviceId,
+            };
 
-            window.alert('Request sent to admin successfully!');
+            console.log('Subscribe - Request Body:', requestBody);
+
+            const response = await axios.put(apiUrl, requestBody, { 
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                withCredentials: true
+            });
+
+            console.log('Subscription Update Response:', response);
+
+            if (response.status === 200 || response.status === 204) {
+                window.alert('Subscription updated successfully!');
+            } else {
+                setError('Failed to update the subscription. Please try again.');
+                console.error('Unexpected response status:', response.status);
+            }
         } catch (err) {
-            setError('Error sending request to admin.');
-            console.error('Error details:', err);
+            setError('Error updating subscription.');
+            console.error('Error updating subscription:', {
+                message: err.message,
+                response: err.response ? err.response.data : null,
+                status: err.response ? err.response.status : 'No status',
+                headers: err.response ? err.response.headers : 'No headers',
+            });
         }
     };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div className="services-container">
             <h2>Modify TV Subscription</h2>
-            {error && <div className="alert alert-error">{error}</div>}
-            {loading ? (
-                <p>Loading...</p>
-            ) : filteredServices.length > 0 ? (
+            {filteredServices.length > 0 ? (
                 <div className="services-grid">
                     {filteredServices.map((service) => (
                         service.active && (
@@ -116,16 +142,14 @@ const ModifyTvSubscription = () => {
                                     <p><span className="icon">⬇️</span> <strong>Download Speed:</strong> {service.serviceDownloadSpeed} Mbps</p>
                                     <p><span className="icon">⬆️</span> <strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
                                 </div>
-                                <p className="plan-cost"><strong>Cost:</strong> ${service.monthlyCost}/month</p>
-                                <button className="subscribe-button" onClick={() => handleSubscribe(service.serviceId)}>
-                                    Subscribe
-                                </button>
+                                <p className="plan-cost"><strong>Monthly Cost:</strong> ${service.monthlyCost}</p>
+                                <button className="subscribe-button" onClick={() => handleSubscribe(service)}>Modify Subscription</button>
                             </div>
                         )
                     ))}
                 </div>
             ) : (
-                !loading && <p>No available services found.</p>
+                <div>No services available for modification.</div>
             )}
         </div>
     );

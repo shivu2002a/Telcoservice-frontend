@@ -53,6 +53,7 @@ function ManageServices() {
         .then(() => {
           alert('Service successfully terminated.');
           setInternetServices(prevServices => prevServices.filter(service => service.serviceId !== serviceId));
+          navigate('/admin/manageServices')
         })
         .catch(() => {
           alert('Error terminating service.');
@@ -72,6 +73,7 @@ function ManageServices() {
         .then(() => {
           alert('Service successfully terminated.');
           setTvServices(prevServices => prevServices.filter(service => service.serviceId !== serviceId));
+          navigate('/admin/manageServices')
         })
         .catch(() => {
           alert('Error terminating service.');

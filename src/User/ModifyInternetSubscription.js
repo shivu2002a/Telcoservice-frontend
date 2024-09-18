@@ -12,8 +12,10 @@ const ModifyInternetSubscription = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const selectedServiceName = queryParams.get('serviceName');
+
     console.log('User ID:', userId);
-console.log('Selected Service Name:', selectedServiceName);
+    console.log('Selected Service Name:', selectedServiceName);
+
     useEffect(() => {
         const fetchLoggedInUser = async () => {
             try {
@@ -78,81 +80,51 @@ console.log('Selected Service Name:', selectedServiceName);
         fetchFilteredServices();
     }, [userId, selectedServiceName]);
 
-    const handleTerminateOldService = async () => {
+    const handleSubscribe = async (newService) => {
         if (!currentService) {
             setError('Current service not found.');
             return;
         }
 
         try {
+            console.log('Terminating old service...');
+            await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms delay
+
             const apiUrl = `http://localhost:8082/user/api/internet-service`;
-            const params = {
-                availedServiceId: currentService.internetService.serviceId,
+            const requestBody = {
                 startDate: currentService.startDate,
+                endDate: currentService.endDate||null, // or the actual end date
+                oldServiceId: currentService.internetService.serviceId,
+                newServiceId: newService.serviceId,
             };
 
-            console.log('Terminate Old Service - Params:', params);
+            console.log('Subscribe - Request Body:', requestBody);
 
-            const response = await axios.delete(apiUrl, { params, withCredentials: true });
+            const response = await axios.put(apiUrl, requestBody, { 
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                withCredentials: true
+            });
 
-            console.log('Termination Response:', response);
+            console.log('Subscription Update Response:', response);
 
-            window.alert('Old service terminated successfully!');
+            if (response.status === 200 || response.status === 204) {
+                window.alert('Subscription updated successfully!');
+            } else {
+                setError('Failed to update the subscription. Please try again.');
+                console.error('Unexpected response status:', response.status);
+            }
         } catch (err) {
-            setError('Error terminating old service.');
-            console.error('Error terminating service:', err);
+            setError('Error updating subscription.');
+            console.error('Error updating subscription:', {
+                message: err.message,
+                response: err.response ? err.response.data : null,
+                status: err.response ? err.response.status : 'No status',
+                headers: err.response ? err.response.headers : 'No headers',
+            });
         }
     };
-
-    const handleSubscribe = async (newService) => {
-      if (!currentService) {
-          setError('Current service not found.');
-          return;
-      }
-  
-      try {
-          console.log('Terminating old service...');
-          await handleTerminateOldService(); // Ensure old service is terminated
-  
-          // Adding a slight delay to ensure termination is fully processed
-          await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms delay
-  
-          const apiUrl = `http://localhost:8082/user/api/internet-service`;
-          const requestBody = {
-              startDate: currentService.startDate,
-              endDate: currentService.endDate,
-              oldServiceId: currentService.internetService.serviceId,
-              newServiceId: newService.serviceId,
-          };
-  
-          console.log('Subscribe - Request Body:', requestBody);
-  
-          const response = await axios.put(apiUrl, requestBody, { 
-              headers: {
-                  'Content-Type': 'application/json' 
-              },
-              withCredentials: true
-          });
-  
-          console.log('Subscription Update Response:', response);
-  
-          if (response.status === 200 || response.status === 204) {
-              window.alert('Subscription updated successfully!');
-          } else {
-              setError('Failed to update the subscription. Please try again.');
-              console.error('Unexpected response status:', response.status);
-          }
-      } catch (err) {
-          setError('Error updating subscription.');
-          console.error('Error updating subscription:', {
-              message: err.message,
-              response: err.response ? err.response.data : null,
-              status: err.response ? err.response.status : 'No status',
-              headers: err.response ? err.response.headers : 'No headers',
-          });
-      }
-  };
-  
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -173,16 +145,14 @@ console.log('Selected Service Name:', selectedServiceName);
                                     <p><span className="icon">⬇️</span> <strong>Download Speed:</strong> {service.serviceDownloadSpeed} Mbps</p>
                                     <p><span className="icon">⬆️</span> <strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
                                 </div>
-                                <p className="plan-cost">${service.cost}/month</p>
-                                <button className="subscribe-button" onClick={() => handleSubscribe(service)}>
-                                    Update Subscription
-                                </button>
+                                <p className="plan-cost"><strong>Monthly Cost:</strong> ${service.monthlyCost}</p>
+                                <button className="subscribe-button" onClick={() => handleSubscribe(service)}>Modify Subscription</button>
                             </div>
                         )
                     ))}
                 </div>
             ) : (
-                <p>No available services found.</p>
+                <div>No services available for modification.</div>
             )}
         </div>
     );
