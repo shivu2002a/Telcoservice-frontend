@@ -10,6 +10,9 @@ const UserDashboard = () => {
           <ul className="dashboard-nav-links">
             {/* Remove the Services link */}
             <li>
+              <Link to='/user'>Home</Link>
+            </li>
+            <li>
               <Link to="/user/services">Services</Link>
             </li>
             <li>

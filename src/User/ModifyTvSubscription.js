@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Styling_Components/styles.css'; // Import your CSS file here
-import { useLocation } from 'react-router-dom';
+import './Styling_Components/Services.css'; // Import your CSS file here
+import { useLocation,useNavigate } from 'react-router-dom';
 
 const ModifyTvSubscription = () => {
     const [filteredServices, setFilteredServices] = useState([]);
@@ -9,6 +9,10 @@ const ModifyTvSubscription = () => {
     const [currentService, setCurrentService] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [confirmDialog, setConfirmDialog] = useState(false);
+    const [costDifference, setCostDifference] = useState(0);
+    const [newServiceToSubscribe, setNewServiceToSubscribe] = useState(null);
+    const navigate=useLocation();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const selectedServiceName = queryParams.get('serviceName');
@@ -83,6 +87,23 @@ const ModifyTvSubscription = () => {
             return;
         }
 
+        // Calculate the cost difference
+        const currentCost = currentService.tvService.monthlyCost || 0;
+        const newCost = newService.monthlyCost || 0;
+        const costDifference = newCost - currentCost;
+
+        setCostDifference(costDifference);
+        setNewServiceToSubscribe(newService);
+        setConfirmDialog(true);
+    };
+
+    const handleConfirmSubscription = async () => {
+        if (!currentService || !newServiceToSubscribe) {
+            setError('Current service or new service not found.');
+            setConfirmDialog(false);
+            return;
+        }
+
         try {
             console.log('Terminating old service...');
             await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms delay
@@ -90,9 +111,9 @@ const ModifyTvSubscription = () => {
             const apiUrl = `http://localhost:8082/user/api/tv-service`;
             const requestBody = {
                 startDate: currentService.startDate,
-                endDate: currentService.endDate || null, // or the actual end date
+                endDate: currentService.endDate || null,
                 oldServiceId: currentService.tvService.serviceId,
-                newServiceId: newService.serviceId,
+                newServiceId: newServiceToSubscribe.serviceId,
             };
 
             console.log('Subscribe - Request Body:', requestBody);
@@ -108,6 +129,7 @@ const ModifyTvSubscription = () => {
 
             if (response.status === 200 || response.status === 204) {
                 window.alert('Subscription updated successfully!');
+                navigate('/user/subscribed-services');
             } else {
                 setError('Failed to update the subscription. Please try again.');
                 console.error('Unexpected response status:', response.status);
@@ -120,6 +142,8 @@ const ModifyTvSubscription = () => {
                 status: err.response ? err.response.status : 'No status',
                 headers: err.response ? err.response.headers : 'No headers',
             });
+        } finally {
+            setConfirmDialog(false);
         }
     };
 
@@ -138,11 +162,7 @@ const ModifyTvSubscription = () => {
                                 <p><strong>Type:</strong> {service.serviceType}</p>
                                 <p><strong>Description:</strong> {service.description}</p>
                                 <p><strong>Benefits:</strong> {service.benefits}</p>
-                                <div className="speed-info">
-                                    <p><span className="icon">⬇️</span> <strong>Download Speed:</strong> {service.serviceDownloadSpeed} Mbps</p>
-                                    <p><span className="icon">⬆️</span> <strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
-                                </div>
-                                <p className="plan-cost"><strong>Monthly Cost:</strong> ${service.monthlyCost}</p>
+                                <p className="plan-cost">${service.cost}</p>
                                 <button className="subscribe-button" onClick={() => handleSubscribe(service)}>Modify Subscription</button>
                             </div>
                         )
@@ -150,6 +170,24 @@ const ModifyTvSubscription = () => {
                 </div>
             ) : (
                 <div>No services available for modification.</div>
+            )}
+
+            {/* Confirmation Dialog */}
+            {confirmDialog && (
+                <div className="confirm-dialog">
+                    <h3>Confirm Subscription Update</h3>
+                    <p><strong>Current Service Cost:</strong> ${currentService.tvService.monthlyCost || 'N/A'}</p>
+                    <p><strong>New Service Cost:</strong> ${newServiceToSubscribe.monthlyCost || 'N/A'}</p>
+                    <p><strong>Cost Difference:</strong> ${costDifference}</p>
+                    <p>
+                        {costDifference > 0 ? 
+                            `You will need to pay an additional $${costDifference}. Are you okay with this?` :
+                            `You will be refunded $${Math.abs(costDifference)}.`
+                        }
+                    </p>
+                    <button onClick={handleConfirmSubscription}>Confirm</button>
+                    <button onClick={() => setConfirmDialog(false)}>Cancel</button>
+                </div>
             )}
         </div>
     );
