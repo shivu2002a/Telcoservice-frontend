@@ -27,6 +27,7 @@ function PendingRequests() {
       const response = await axios.get(endpoint, { withCredentials: true });
       const serviceData = response.data;
       return {
+        serviceId,
         serviceName: serviceData.serviceName || 'Unknown Service',
         criteria: serviceData.criteria || 'No Criteria',
         active: serviceData.active || false,

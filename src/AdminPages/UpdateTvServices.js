@@ -32,17 +32,18 @@ function UpdateTvServices() {
     const updatedData={
         serviceId,
         serviceName:tvService.serviceName,
-        monthlyCost:tvService.monthlyCost,
+        cost:tvService.cost,
         benefits:tvService.benefits,
         description:tvService.description,
         criteria:tvService.criteria,
-        serviceType:tvService.serviceType
+        serviceType:tvService.serviceType,
+        validity:tvService.validity,
     };
     axios.patch(`http://localhost:8082/admin/api/tv-service`, updatedData,{withCredentials:true})
       .then(response => {
         console.log("Service updated:", response.data);
-        alert("Service updated successfully!!\n Redirecting to home page");
-        navigate('/admin/services'); // Redirect to the services page after updating
+        alert("Service updated successfully!!");
+        navigate('/admin/manageServices'); // Redirect to the services page after updating
       })
       .catch(error => {
         console.error("There was an error updating the service!", error);
@@ -92,13 +93,13 @@ function UpdateTvServices() {
                           Cost:Rs.
                           <textarea
                               value={tvService.cost}
-                              onChange={(e) => setTvService({ ...tvService, monthlyCost: e.target.value })} />
+                              onChange={(e) => setTvService({ ...tvService, cost: e.target.value })} />
                       </label>
                       <label>
               Validity(in days):
               <textarea
                 value={tvService.validity}
-                onChange={(e) => setTvService({ ...tvService, criteria: e.target.value })} />
+                onChange={(e) => setTvService({ ...tvService, validity: e.target.value })} />
             </label>
                       {/* Add other fields as necessary */}
                       <button type="button" onClick={handleSaveTvService}>Save Changes</button>

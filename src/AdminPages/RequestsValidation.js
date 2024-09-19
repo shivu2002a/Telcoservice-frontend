@@ -22,6 +22,16 @@ function RequestsValidation() {
   const navigate = useNavigate();
 
   const handleSubmit = async (status) => {
+    console.log("Request ID:", request.requestId);  // Log the requestId for debugging
+    console.log("Service ID:", service.serviceId);  // Log serviceId
+    console.log("User ID:", request.userId);  // Log userId
+    console.log("Request Status:", status);  // Log status
+  
+    if (!request.requestId || !service.serviceId || !request.userId) {
+      alert("Missing necessary data. Please check request and service details.");
+      return;
+    }
+  
     try {
       const response = await axios.patch('http://localhost:8082/admin/api/approval-requests', {
         requestId: request.requestId, 
@@ -31,7 +41,7 @@ function RequestsValidation() {
         userId: request.userId,
         serviceType: request.serviceType
       }, { withCredentials: true });
-
+  
       if (response.status >= 200 && response.status < 300) {
         alert(`Request ${status.toLowerCase()} successfully!`);
         navigate('/admin/requests');
@@ -48,6 +58,7 @@ function RequestsValidation() {
       }
     }
   };
+  
 
   // Format the address
   const formattedAddress = formatKeyValuePairs(user.address||'');
@@ -113,11 +124,12 @@ function RequestsValidation() {
           Approve
         </button>
         <button 
-          className="disapprove-btn"
-          onClick={() => handleSubmit('DISAPPROVED')}
-        >
-          Disapprove
-        </button>
+  className="disapprove-btn"
+  onClick={() => handleSubmit('DISAPPROVED')}
+  disabled={remarks.trim() === ''}
+>
+  Disapprove
+</button>
       </div>
     </div>
   );
