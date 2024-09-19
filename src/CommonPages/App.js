@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import './Styling_Components/App.css';
 import TelstraLogo from '../Images/Telstra.jfif';
 import BackgroundImage from '../Images/Background.jpg';
+import AutoLogout from './AutoLogout';
 function App() {
   const backgroundStyle = {
     backgroundImage: `url(${BackgroundImage})`,
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <>
+    <AutoLogout />
     <div style={backgroundStyle}>
       <nav className="navbar" id="top-navbar">
         <div className='logo'>

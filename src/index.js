@@ -15,10 +15,10 @@ import PendingRequests from './AdminPages/PendingRequests.js';
 import RequestsValidation from './AdminPages/RequestsValidation.js';
 import ManageServices from './AdminPages/ManageServices.js';
 import AdminApp from './AdminPages/AdminApp.js';
-import AdminHome from './AdminPages/AdminHome.js';
 import AddTvService from './AdminPages/AddTvService.js';
 import AddInternetService from './AdminPages/AddInternetService.js';
 import AdminDashboard from './AdminPages/AdminDashboard.js';
+import AddNewAdmin from './AdminPages/AddNewAdmin.js';
 import UserDashboard from './User/UserDashboard';
 import SubscribedServices from './User/SubscribedServices';
 import Services from './User/Services';
@@ -62,7 +62,6 @@ export default function Index() {
             </ProtectedRoute>
           }
         >
-          <Route path="home" element={<AdminHome />} />
           <Route path="manageServices" element={<ManageServices />} />
           <Route path="addTvService" element={<AddTvService />} />
           <Route path="addInternetService" element={<AddInternetService />} />
@@ -71,6 +70,7 @@ export default function Index() {
           <Route path="requests" element={<PendingRequests />} />
           <Route path="validation" element={<RequestsValidation />} />
           <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="addNewAdmin" element={<AddNewAdmin/>}/>
         </Route>
         {/* Protected user routes - grouped under /user */}
         <Route

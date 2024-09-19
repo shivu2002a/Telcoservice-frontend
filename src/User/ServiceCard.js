@@ -11,7 +11,7 @@ const ServiceCard = ({ service, isSubscribed, isRequested, onSubscribe, isButton
 
     return (
         <div className="service-box">
-            <h2>{service.serviceName}</h2>
+            <h2><strong>{service.serviceName}</strong></h2>
             <p><strong>Type:</strong> {service.serviceType}</p>
             <p><strong>Description:</strong> {service.description}</p>
             <p><strong>Benefits:</strong> {service.benefits}</p>
@@ -21,7 +21,8 @@ const ServiceCard = ({ service, isSubscribed, isRequested, onSubscribe, isButton
                     <p><strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
                 </div>
             )}
-            <p className="plan-cost">${service.cost}</p>
+            <p className="plan-cost">Rs.{service.cost}</p>
+            <p className='plan-validity'>{service.validity} Days</p>
             <div className="button-container">
                 <button
                     className="subscribe-btn"

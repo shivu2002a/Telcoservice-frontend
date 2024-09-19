@@ -1,1 +1,191 @@
+/* General Styles */
+.services-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
 
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.no-services {
+    font-style: italic;
+    color: #666;
+}
+
+/* Services Grid */
+.services-grid-subscribed {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Active Services */
+.active-services {
+    background-color: #e9f5f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #d0e3e5;
+}
+
+.active-services h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #007bff;
+}
+
+/* Past Services */
+.past-services {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.past-services h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #777;
+    font-style: italic;
+}
+
+/* Service Section */
+.service-section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.service-section h4 {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Service Box */
+.service-box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.service-box .service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-box .service-header h5 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.btn {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+
+.modify-button {
+    background-color: #007bff!important;
+}
+
+.modify-button:hover {
+    background-color: #0056b3!important;
+}
+
+.terminate-button {
+    background-color: #dc3545!important;
+}
+
+.terminate-button:hover {
+    background-color: #c82333!important;
+}
+
+.service-box p {
+    margin: 5px 0;
+}
+
+.speed-info {
+    margin: 10px 0;
+}
+
+.icon {
+    font-size: 1.2em;
+    margin-right: 5px;
+}
+
+.plan-cost {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Past Services Styling */
+.service-box.inactive {
+    opacity: 0.7;
+    background-color: #f2f2f2;
+}
+/* Confirmation Dialog Styles */
+.confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.confirm-dialog h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.confirm-dialog p {
+    margin: 10px 0;
+}
+
+.confirm-dialog button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+.confirm-dialog button:hover {
+    background-color: #0056b3;
+}
+
+.confirm-dialog .cancel-button {
+    background-color: #dc3545;
+}
+
+.confirm-dialog .cancel-button:hover {
+    background-color: #c82333;
+}
+.buttons{
+    display:flex;
+}

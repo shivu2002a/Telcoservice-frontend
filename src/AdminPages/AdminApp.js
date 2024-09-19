@@ -30,10 +30,11 @@ function AdminApp() {
             <h1 className="title">Telcoservice Provisioning</h1>
           </div>
           <ul className="nav-links">
-            <li><Link to="/admin/home">Home</Link></li>
+            <li><Link to="/admin">Home</Link></li>
             <li><Link to="/admin/manageServices">Manage Services</Link></li>
             <li><Link to="/admin/requests">Manage Requests</Link></li>
             <li><Link to="/admin/dashboard">Dashboard</Link></li>
+            <li><Link to="/admin/addNewAdmin">Add Admin</Link></li>
             <li><Link to="/logout">Logout</Link></li>
           </ul>
         </nav>

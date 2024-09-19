@@ -61,70 +61,143 @@ const SubscribedServices = () => {
             state: { service }
         });
     };
+
+    const currentDate = new Date();
+
+    const filterActiveServices = (services) => {
+        return services.filter(service => !service.endDate || new Date(service.endDate) >= currentDate);
+    };
+
+    const filterPastServices = (services) => {
+        return services.filter(service => service.endDate && new Date(service.endDate) < currentDate);
+    };
+
+    const activeInternetServices = filterActiveServices(internetServices);
+    const pastInternetServices = filterPastServices(internetServices);
+    const activeTvServices = filterActiveServices(tvServices);
+    const pastTvServices = filterPastServices(tvServices);
+
     return (
         <div className="services-container">
             <h2>My Services</h2>
             {error && <p className="error-message">{error}</p>}
-            {internetServices.length === 0 && tvServices.length === 0 ? (
+            {activeInternetServices.length === 0 && activeTvServices.length === 0 && pastInternetServices.length === 0 && pastTvServices.length === 0 ? (
                 <p className="no-services">No services found.</p>
             ) : (
-                <div className="services-grid">
-                    {internetServices.length > 0 && (
-                        <div className="service-section">
-                            <h3>Internet Services</h3>
-                            {internetServices.map(service => (
-                                <div className="service-box" key={service.serviceId}>
-                                    <div className="service-header">
-                                        <h4>{service.internetService.serviceName}</h4>
-                                        <button onClick={() => handleModifyInternet(service.internetService.serviceName)} className="btn modify-button">
-                                            Modify
-                                        </button>
-                                    </div>
-                                    <p><strong>Type:</strong> {service.internetService.serviceType}</p>
-                                    <p><strong>Description:</strong> {service.internetService.description}</p>
-                                    <p><strong>Benefits:</strong> {service.internetService.benefits}</p>
-                                    <div className="speed-info">
-                                        <p><span className="icon">⬇️</span> <strong>Download Speed:</strong> {service.internetService.serviceDownloadSpeed} Mbps</p>
-                                        <p><span className="icon">⬆️</span> <strong>Upload Speed:</strong> {service.internetService.serviceUploadSpeed} Mbps</p>
-                                    </div>
-                                    <p><strong>Start Date:</strong> {new Date(service.startDate).toLocaleDateString()}</p>
-                                    <p><strong>End Date:</strong> {service.endDate ? new Date(service.endDate).toLocaleDateString() : 'Ongoing'}</p>
-                                    <p className="plan-cost">${service.internetService.cost}</p>
-                                    <button
-                                        className="btn terminate-button"
-                                        onClick={() => handleTerminateInternetService(service)}
-                                    >
-                                        Terminate Internet Service
-                                    </button>
+                <div className="services-grid-subscribed">
+                    {/* Active Services */}
+                    {(activeInternetServices.length > 0 || activeTvServices.length > 0) && (
+                        <div className="active-services">
+                            <h3>Active Services</h3>
+                            {activeInternetServices.length > 0 && (
+                                <div className="service-section">
+                                    <h4>Internet Services</h4>
+                                    {activeInternetServices.map(service => (
+                                        <div className="service-box" key={service.serviceId}>
+                                            <div className="service-header">
+                                                <h3>{service.internetService.serviceName}</h3>
+                                            </div>
+                                            <p><strong>Type:</strong> {service.internetService.serviceType}</p>
+                                            <p><strong>Description:</strong> {service.internetService.description}</p>
+                                            <p><strong>Benefits:</strong> {service.internetService.benefits}</p>
+                                            <div className="speed-info">
+                                                <p><span className="icon">⬇️</span> <strong>Download Speed:</strong> {service.internetService.serviceDownloadSpeed} Mbps</p>
+                                                <p><span className="icon">⬆️</span> <strong>Upload Speed:</strong> {service.internetService.serviceUploadSpeed} Mbps</p>
+                                            </div>
+                                            <p><strong>Start Date:</strong> {new Date(service.startDate).toLocaleDateString()}</p>
+                                            <p><strong>End Date:</strong> {service.endDate ? new Date(service.endDate).toLocaleDateString() : 'Ongoing'}</p>
+                                            <p className="plan-cost">${service.internetService.cost}</p>
+                                            <div className='buttons'>
+                                            <button onClick={() => handleModifyInternet(service.internetService.serviceName)} className="btn modify-button">
+                                                   Modify Service
+                                                </button>
+                                            <button
+                                                className="btn terminate-button"
+                                                onClick={() => handleTerminateInternetService(service)}
+                                            >
+                                            Terminate Service
+                                            </button>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            )}
+                            {activeTvServices.length > 0 && (
+                                <div className="service-section">
+                                    <h4>TV Services</h4>
+                                    {activeTvServices.map(service => (
+                                        <div className="service-box" key={service.serviceId}>
+                                            <div className="service-header">
+                                                <h3>{service.tvService.serviceName}</h3>
+                                            </div>
+                                            <p><strong>Type:</strong> {service.tvService.serviceType}</p>
+                                            <p><strong>Description:</strong> {service.tvService.description}</p>
+                                            <p><strong>Benefits:</strong> {service.tvService.benefits}</p>
+                                            <p><strong>Start Date:</strong> {new Date(service.startDate).toLocaleDateString()}</p>
+                                            <p><strong>End Date:</strong> {service.endDate ? new Date(service.endDate).toLocaleDateString() : 'Ongoing'}</p>
+                                            <p className="plan-cost">${service.tvService.cost}</p>
+                                            <div className='buttons'>
+                                            <button onClick={() => handleModifyTv(service.tvService.serviceName)} className="btn modify-button">
+                                            Modify Service
+                                            </button>
+                                            <button
+                                                className="btn terminate-button"
+                                                onClick={() => handleTerminateTvService(service)}
+                                            >
+                                                Terminate Service
+                                            </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     )}
-                    {tvServices.length > 0 && (
-                        <div className="service-section">
-                            <h3>TV Services</h3>
-                            {tvServices.map(service => (
-                                <div className="service-box" key={service.serviceId}>
-                                    <div className="service-header">
-                                        <h4>{service.tvService.serviceName}</h4>
-                                        <button onClick={() => handleModifyTv(service.tvService.serviceName)} className="btn modify-button">
-                                            Modify
-                                        </button>
-                                    </div>
-                                    <p><strong>Type:</strong> {service.tvService.serviceType}</p>
-                                    <p><strong>Description:</strong> {service.tvService.description}</p>
-                                    <p><strong>Benefits:</strong> {service.tvService.benefits}</p>
-                                    <p><strong>Start Date:</strong> {new Date(service.startDate).toLocaleDateString()}</p>
-                                    <p><strong>End Date:</strong> {service.endDate ? new Date(service.endDate).toLocaleDateString() : 'Ongoing'}</p>
-                                    <p className="plan-cost">${service.tvService.cost}</p>
-                                    <button
-                                        className="btn terminate-button"
-                                        onClick={() => handleTerminateTvService(service)}
-                                    >
-                                        Terminate TV Service
-                                    </button>
+
+                    {/* Past Services */}
+                    {(pastInternetServices.length > 0 || pastTvServices.length > 0) && (
+                        <div className="past-services">
+                            <h3>Past Services</h3>
+                            {pastInternetServices.length > 0 && (
+                                <div className="service-section">
+                                    <h4>Internet Services</h4>
+                                    {pastInternetServices.map(service => (
+                                        <div className="service-box inactive" key={service.serviceId}>
+                                            <div className="service-header">
+                                                <h5>{service.internetService.serviceName}</h5>
+                                            </div>
+                                            <p><strong>Type:</strong> {service.internetService.serviceType}</p>
+                                            <p><strong>Description:</strong> {service.internetService.description}</p>
+                                            <p><strong>Benefits:</strong> {service.internetService.benefits}</p>
+                                            <div className="speed-info">
+                                                <p><span className="icon">⬇️</span> <strong>Download Speed:</strong> {service.internetService.serviceDownloadSpeed} Mbps</p>
+                                                <p><span className="icon">⬆️</span> <strong>Upload Speed:</strong> {service.internetService.serviceUploadSpeed} Mbps</p>
+                                            </div>
+                                            <p><strong>Start Date:</strong> {new Date(service.startDate).toLocaleDateString()}</p>
+                                            <p><strong>End Date:</strong> {service.endDate ? new Date(service.endDate).toLocaleDateString() : 'Ongoing'}</p>
+                                            <p className="plan-cost">${service.internetService.cost}</p>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            )}
+                            {pastTvServices.length > 0 && (
+                                <div className="service-section">
+                                    <h4>TV Services</h4>
+                                    {pastTvServices.map(service => (
+                                        <div className="service-box inactive" key={service.serviceId}>
+                                            <div className="service-header">
+                                                <h5>{service.tvService.serviceName}</h5>
+                                            </div>
+                                            <p><strong>Type:</strong> {service.tvService.serviceType}</p>
+                                            <p><strong>Description:</strong> {service.tvService.description}</p>
+                                            <p><strong>Benefits:</strong> {service.tvService.benefits}</p>
+                                            <p><strong>Start Date:</strong> {new Date(service.startDate).toLocaleDateString()}</p>
+                                            <p><strong>End Date:</strong> {service.endDate ? new Date(service.endDate).toLocaleDateString() : 'Ongoing'}</p>
+                                            <p className="plan-cost">${service.tvService.cost}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
