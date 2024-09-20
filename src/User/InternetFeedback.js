@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Styling_Components/FeedbackForm.css'; // Import the CSS file
 
 const InternetFeedback = () => {
     const location = useLocation();
@@ -50,7 +51,7 @@ const InternetFeedback = () => {
 
         try {
             await axios.delete('http://localhost:8082/user/api/internet-service', {
-                params: { availedServiceId: service.serviceId ,startDate: formattedDate.toISOString().split('T')[0] },
+                params: { availedServiceId: service.serviceId, startDate: formattedDate.toISOString().split('T')[0] },
                 withCredentials: true
             });
             window.confirm('Do you want to submit feedback and terminate the service?');
@@ -64,7 +65,7 @@ const InternetFeedback = () => {
     };
 
     return (
-        <div>
+        <div className='feedback'>
             <h2>Provide Feedback for {service.internetService?.serviceName || 'Loading...'}</h2>
             <form onSubmit={handleSubmit}>
                 <textarea value={feedback} onChange={handleFeedbackChange} placeholder="Enter feedback" />

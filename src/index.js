@@ -8,7 +8,7 @@ import ProtectedRoute from './CommonPages/ProtectedRoute.js';
 import SignUp from './CommonPages/SignUp.js';
 import Logout from './CommonPages/Logout.js';
 import Login from './CommonPages/Login.js';
-import Home from './CommonPages/Home.js';
+import AdminHome from './AdminPages/Home.js';
 import UpdateTvServices from './AdminPages/UpdateTvServices.js';
 import UpdateInternetServices from './AdminPages/UpdateInternetServices.js';
 import PendingRequests from './AdminPages/PendingRequests.js';
@@ -19,6 +19,7 @@ import AddTvService from './AdminPages/AddTvService.js';
 import AddInternetService from './AdminPages/AddInternetService.js';
 import AdminDashboard from './AdminPages/AdminDashboard.js';
 import AddNewAdmin from './AdminPages/AddNewAdmin.js';
+import UserHome from './User/Home.js';
 import UserDashboard from './User/UserDashboard';
 import SubscribedServices from './User/SubscribedServices';
 import Services from './User/Services';
@@ -49,7 +50,6 @@ export default function Index() {
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<App />} />
-        <Route path="home" element={<Home />} />
         <Route path="login" element={<Login setIsAdmin={setIsAdmin} setIsUser={setIsUser} />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="logout" element={<Logout setIsAdmin={setIsAdmin} setIsUser={setIsUser} />} />
@@ -62,6 +62,7 @@ export default function Index() {
             </ProtectedRoute>
           }
         >
+          <Route path="home" element={<AdminHome/>}/>
           <Route path="manageServices" element={<ManageServices />} />
           <Route path="addTvService" element={<AddTvService />} />
           <Route path="addInternetService" element={<AddInternetService />} />
@@ -81,6 +82,7 @@ export default function Index() {
             </ProtectedRoute>
           }
         >
+          <Route path="home" element={<UserHome/>}/>
           <Route path="services" element={<Services />} />
           <Route path="subscribed-services" element={<SubscribedServices />} />
           <Route path="modify-internet-subscription" element={<ModifyInternetSubscription />} />

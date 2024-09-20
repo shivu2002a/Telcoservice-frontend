@@ -3,6 +3,10 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  button{
+    background-color: black;
+    color:white;
+  }
 }
 
 /* Service section styling */

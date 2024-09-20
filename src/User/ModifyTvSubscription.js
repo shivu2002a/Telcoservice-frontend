@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Styling_Components/Services.css'; // Import your CSS file here
-import { useLocation,useNavigate } from 'react-router-dom';
+import './Styling_Components/Services.css'; 
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const ModifyTvSubscription = () => {
+const ModifyTVSubscription = () => {
     const [filteredServices, setFilteredServices] = useState([]);
     const [userId, setUserId] = useState(null);
     const [currentService, setCurrentService] = useState(null);
@@ -12,10 +12,11 @@ const ModifyTvSubscription = () => {
     const [confirmDialog, setConfirmDialog] = useState(false);
     const [costDifference, setCostDifference] = useState(0);
     const [newServiceToSubscribe, setNewServiceToSubscribe] = useState(null);
-    const navigate=useLocation();
+
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const selectedServiceName = queryParams.get('serviceName');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchLoggedInUser = async () => {
@@ -88,8 +89,8 @@ const ModifyTvSubscription = () => {
         }
 
         // Calculate the cost difference
-        const currentCost = currentService.tvService.monthlyCost || 0;
-        const newCost = newService.monthlyCost || 0;
+        const currentCost = currentService.tvService.cost || 0;
+        const newCost = newService.cost || 0;
         const costDifference = newCost - currentCost;
 
         setCostDifference(costDifference);
@@ -162,6 +163,9 @@ const ModifyTvSubscription = () => {
                                 <p><strong>Type:</strong> {service.serviceType}</p>
                                 <p><strong>Description:</strong> {service.description}</p>
                                 <p><strong>Benefits:</strong> {service.benefits}</p>
+                                <div className="speed-info">
+                                    <p><span className="icon">📺</span> <strong>Channel Count:</strong> {service.channelCount}</p>
+                                </div>
                                 <p className="plan-cost">${service.cost}</p>
                                 <button className="subscribe-button" onClick={() => handleSubscribe(service)}>Modify Subscription</button>
                             </div>
@@ -176,13 +180,13 @@ const ModifyTvSubscription = () => {
             {confirmDialog && (
                 <div className="confirm-dialog">
                     <h3>Confirm Subscription Update</h3>
-                    <p><strong>Current Service Cost:</strong> ${currentService.tvService.monthlyCost || 'N/A'}</p>
-                    <p><strong>New Service Cost:</strong> ${newServiceToSubscribe.monthlyCost || 'N/A'}</p>
+                    <p><strong>Current Service Cost:</strong> ${currentService.tvService.cost || 'N/A'}</p>
+                    <p><strong>New Service Cost:</strong> ${newServiceToSubscribe.cost || 'N/A'}</p>
                     <p><strong>Cost Difference:</strong> ${costDifference}</p>
                     <p>
                         {costDifference > 0 ? 
-                            `You will need to pay an additional $${costDifference}. Are you okay with this?` :
-                            `You will be refunded $${Math.abs(costDifference)}.`
+                            `You will need to pay an additional Rs.${Math.round(costDifference)}. Are you okay with this?` :
+                            `You will be refunded Rs.${Math.abs(Math.round(costDifference))}.`
                         }
                     </p>
                     <button onClick={handleConfirmSubscription}>Confirm</button>
@@ -193,4 +197,4 @@ const ModifyTvSubscription = () => {
     );
 };
 
-export default ModifyTvSubscription;
+export default ModifyTVSubscription;

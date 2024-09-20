@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import './Styling_Components/App.css';
 import TelstraLogo from '../Images/Telstra.jfif';
 import BackgroundImage from '../Images/Background.jpg';
-import AutoLogout from './AutoLogout';
+import AutoLogout from '../CommonPages/AutoLogout';
 import Services from '../Images/Services.jfif';
 import UpgradeDowngrade from '../Images/UpgradeDowngrade.jfif';
 import Terminate from '../Images/Terminate.jpg';
@@ -19,7 +19,7 @@ import Login from '../Images/Login.jfif';
 import Explore from '../Images/Explore.jfif';
 import Confirmation from '../Images/Confirmation.jpg';
 import Request from '../Images/Request.jfif';
-function App() {
+function Home() {
   const backgroundStyle = {
     backgroundImage: `url(${BackgroundImage})`,
     backgroundSize: 'cover',
@@ -47,13 +47,11 @@ function App() {
   }, [location, navigate]);
 
   const handleServiceClick = () => {
-    alert("To view more details or subscribe a plan please sign up and login!!")
-    navigate('/signup');
+    navigate('/user/home');
   };
 
   const handleViewMoreClick = () => {
-    alert("To view more details or subscribe a plan please sign up and login!!")
-    navigate('/signup');
+    navigate('/user/home');
   };
 
   const sliderSettings = {
@@ -70,17 +68,6 @@ function App() {
     <>
       <AutoLogout />
       <div style={backgroundStyle} className='background'>
-        <nav className="navbar" id="top-navbar">
-          <div className='logo'>
-            <img src={TelstraLogo} alt="Logo" className="navbar-image" />
-            <h1 className="title">Telcoservice Provisioning</h1>
-          </div>
-          <ul className="nav-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/signup">Create an account</Link></li>
-          </ul>
-        </nav>
         <Outlet />
 
         {/* Sliding Cards Section */}
@@ -180,4 +167,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
