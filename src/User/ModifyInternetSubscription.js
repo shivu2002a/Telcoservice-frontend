@@ -185,8 +185,8 @@ const ModifyInternetSubscription = () => {
                     <p><strong>Cost Difference:</strong> ${costDifference}</p>
                     <p>
                         {costDifference > 0 ? 
-                            `You will need to pay an additional $${costDifference}. Are you okay with this?` :
-                            `You will be refunded $${Math.abs(costDifference)}.`
+                            `You will need to pay an additional Rs.${costDifference}. Are you okay with this?` :
+                            `You will be refunded Rs.${Math.abs(costDifference)}.`
                         }
                     </p>
                     <button onClick={handleConfirmSubscription}>Confirm</button>

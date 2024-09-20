@@ -23,14 +23,14 @@ const Login = ({ setIsUser, setIsAdmin }) => {
   useEffect(() => {
     const isAdmin = localStorage.getItem('isAdmin');
     const isUser = localStorage.getItem('isUser');
-    const lastPage = localStorage.getItem('lastVisitedPage') || '/home';
+    const lastPage = localStorage.getItem('lastVisitedPage');
 
     if (isAdmin === 'true') {
       setIsAdmin(true);
-      navigate('/admin');
+      navigate('/admin/home');
     } else if (isUser === 'true') {
       setIsUser(true);
-      navigate('/user');
+      navigate('/user/home');
     }
   }, [navigate, setIsAdmin, setIsUser]);
 
@@ -55,18 +55,18 @@ const Login = ({ setIsUser, setIsAdmin }) => {
           });
     
           const userRole = roleResponse.data.userRole;
-          const lastPage = localStorage.getItem('lastVisitedPage') || (userRole === 'ROLE_ADMIN' ? '/admin/home' : '/user');
+          const lastPage = localStorage.getItem('lastVisitedPage') || (userRole === 'ROLE_ADMIN' ? '/admin/home' : '/user/home');
     
           if (userRole === 'ROLE_ADMIN') {
             setIsAdmin(true);
             localStorage.setItem('isAdmin', 'true');
             localStorage.setItem('lastVisitedPage', lastPage); // Ensure last page is set
-            navigate(lastPage);
+            navigate("/admin/home");
           } else if (userRole === 'ROLE_USER') {
             setIsUser(true);
             localStorage.setItem('isUser', 'true');
             localStorage.setItem('lastVisitedPage', lastPage); // Ensure last page is set
-            navigate(lastPage);
+            navigate("/user/home");
           } else {
             alert("Account doesn't exist!! Please sign up.");
             navigate('/signup');
@@ -99,7 +99,7 @@ const Login = ({ setIsUser, setIsAdmin }) => {
           <h1 className="title">Telcoservice Provisioning</h1>
         </div>
         <ul className="nav-links">
-          <li><Link to="/home">Home</Link></li>
+          <li><Link to="/">Home</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/signup">Create an account</Link></li>
         </ul>

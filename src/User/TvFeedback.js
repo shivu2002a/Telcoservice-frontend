@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Styling_Components/FeedbackForm.css'; // Import the CSS file
 
 const TvFeedback = () => {
     const location = useLocation();
@@ -63,7 +64,7 @@ const TvFeedback = () => {
     };
 
     return (
-        <div>
+        <div className='feedback'>
             <h2>Provide Feedback for {service.tvService?.serviceName || 'Loading...'}</h2>
             <form onSubmit={handleSubmit}>
                 <textarea value={feedback} onChange={handleFeedbackChange} placeholder="Enter feedback" />

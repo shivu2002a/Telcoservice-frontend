@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import TelstraLogo from '../Images/Telstra.jfif';
+import AutoLogout from '../CommonPages/AutoLogout';
 
 function AdminApp() {
   const location = useLocation();
@@ -23,6 +24,7 @@ function AdminApp() {
 
   return (
     <>
+    <AutoLogout/>
       <div id="top-navbar">
         <nav className="navbar">
           <div className='logo'>
@@ -30,7 +32,7 @@ function AdminApp() {
             <h1 className="title">Telcoservice Provisioning</h1>
           </div>
           <ul className="nav-links">
-            <li><Link to="/admin">Home</Link></li>
+            <li><Link to="/admin/home">Home</Link></li>
             <li><Link to="/admin/manageServices">Manage Services</Link></li>
             <li><Link to="/admin/requests">Manage Requests</Link></li>
             <li><Link to="/admin/dashboard">Dashboard</Link></li>
@@ -39,7 +41,9 @@ function AdminApp() {
           </ul>
         </nav>
         <Outlet />
+        
       </div>
+
     </>
   );
 }

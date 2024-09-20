@@ -27,7 +27,7 @@ const Logout = ({ setIsAdmin, setIsUser }) => {
           alert("You have been logged out successfully!");
           
           // Redirect to login page
-          navigate('/login');
+          navigate('/');
         } catch (error) {
           console.error('Logout failed:', error);
           alert('Logout failed. Please try again.');

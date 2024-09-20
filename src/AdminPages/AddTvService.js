@@ -9,9 +9,10 @@ function AddTvService() {
     serviceName: '',
     benefits: '',
     criteria: '',
-    monthlyCost: '',
+    cost: '',
     description: '',
     serviceType: 'BASIC',
+    validity:'',
   });
 
   const [loading, setLoading] = useState(false);  // For loading state
@@ -44,9 +45,10 @@ function AddTvService() {
         serviceName: '',
         benefits: '',
         criteria: '',
-        monthlyCost: '',
+        cost: '',
         description: '',
         serviceType: 'BASIC',
+        validity:'',
       });
     } catch (err) {
       console.error(err);
@@ -117,13 +119,22 @@ function AddTvService() {
             onChange={handleChange}
           />
         </div>
-
+        <div>
+          <label>Validity:</label>Days
+          <input
+            type="text"
+            name="validity"
+            value={formData.validity}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <div>
           <label>Cost:</label>RS.
           <input
             type="text"
-            name="monthlyCost"
-            value={formData.monthlyCost}
+            name="cost"
+            value={formData.cost}
             onChange={handleChange}
             required
           />
