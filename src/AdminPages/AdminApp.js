@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import TelstraLogo from '../Images/Telstra.jfif';
 import AutoLogout from '../CommonPages/AutoLogout';
-import ProfileOverlay from './ProfileOverlay'; // Assuming you have a similar ProfileOverlay for admin
+import ProfileOverlay from './ProfileOverlay.js'; // Assuming you have a similar ProfileOverlay for admin
 import UserImage from '../Images/User.jfif'; // Admin profile image
 
 function AdminApp() {

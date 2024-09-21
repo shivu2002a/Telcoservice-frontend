@@ -3,7 +3,7 @@ import { useNavigate,Outlet, Link } from 'react-router-dom';
 import './Styling_Components/UserDashboard.css';
 import AutoLogout from '../CommonPages/AutoLogout';
 import TelstraLogo from '../Images/Telstra.jfif';
-import ProfileOverlay from './ProfileOverlay';
+import ProfileOverlay from './ProfileOverlay.js';
 import UserImage from '../Images/User.jfif';
 
 const UserDashboard = () => {
