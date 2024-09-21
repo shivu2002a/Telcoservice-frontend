@@ -89,12 +89,15 @@ const Login = ({ setIsUser, setIsAdmin }) => {
         }
       }
     };
+    const navigateHome=()=>{
+      navigate('/');
+    }
 
   return (
     <>
     <div style={backgroundStyle}>
       <nav className="navbar">
-        <div className='logo'>
+        <div className='logo' onClick={navigateHome}>
           <img src={TelstraLogo} alt="Logo" className="navbar-image" />
           <h1 className="title">Telcoservice Provisioning</h1>
         </div>

@@ -3,6 +3,8 @@ import axios from 'axios';
 import ServiceCard from './ServiceCard.js';
 import StyleServices from './Styling_Components/Services.css';
 import { useNavigate } from 'react-router-dom';
+import TvImage from '../Images/Tv.jpg';
+import InternetImage from '../Images/Internet.jfif'
 
 function Services() {
     const [internetServices, setInternetServices] = useState([]);
@@ -13,6 +15,8 @@ function Services() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [showMoreInternetServices, setShowMoreInternetServices] = useState(false); // New state for Internet services
+    const [showMoreTvServices, setShowMoreTvServices] = useState(false); // New state for TV services
     const navigate = useNavigate();
 
     // Fetch services data
@@ -102,6 +106,13 @@ function Services() {
         fetchData();
     }, [fetchServices, fetchSubscribedServices, fetchPendingRequests]);
 
+    const handleViewMoreInternet = () => setShowMoreInternetServices(!showMoreInternetServices);
+    const handleViewMoreTv = () => setShowMoreTvServices(!showMoreTvServices);
+
+    // Logic to display 5 services initially and toggle between showing all services or fewer
+    const displayedInternetServices = showMoreInternetServices ? internetServices : internetServices.slice(0, 5);
+    const displayedTvServices = showMoreTvServices ? tvServices : tvServices.slice(0, 5);
+
     const isUserSubscribed = (serviceId, isInternetService) => {
         const subscribedList = isInternetService ? subscribedInternetServices : subscribedTvServices;
         return subscribedList.some(service => service.serviceId === serviceId && service.active);
@@ -131,7 +142,7 @@ function Services() {
         const apiUrl = isInternetService
             ? 'http://localhost:8082/user/api/internet-service'
             : 'http://localhost:8082/user/api/tv-service';
-
+    
         try {
             console.log('Sending request to subscribe to:', apiUrl);
             await axios.post(apiUrl, null, {
@@ -139,14 +150,22 @@ function Services() {
                 withCredentials: true,
             });
             console.log('Request sent successfully for:', serviceId);
-
-            navigate('/user/pending-requests'); // Navigate first
-            window.alert('Request sent successfully! Redirecting to pending requests...');
+    
+            // Check if the service has no criteria
+            const service = isInternetService ? internetServices.find(s => s.serviceId === serviceId) : tvServices.find(s => s.serviceId === serviceId);
+            if (service && !service.criteria) {
+                navigate('/user/subscribed-services'); // Navigate directly to subscribed services
+                window.alert('You have been subscribed directly! Redirecting to subscribed services...');
+            } else {
+                navigate('/user/pending-requests'); // Navigate to pending requests for other cases
+                window.alert('Request sent successfully! Redirecting to pending requests...');
+            }
         } catch (err) {
             window.alert('Error sending request.');
             console.error('Error sending request:', err);
         }
     };
+    
 
     const handleButtonClick = async (serviceId, serviceName, serviceType, isInternetService) => {
         const totalSubscribed = countSubscribedServices(isInternetService);
@@ -156,41 +175,53 @@ function Services() {
         const isSubscribed = isUserSubscribed(serviceId, isInternetService);
         const hasSameNameService = sameNameServiceSubscribed(serviceName, serviceType, isInternetService);
     
+        // Check if the service has empty criteria
+        const service = isInternetService ? internetServices.find(s => s.serviceId === serviceId) : tvServices.find(s => s.serviceId === serviceId);
+        
+        if (service && !service.criteria) {
+            const userConfirmed = window.confirm(`For ${serviceName} service there is no need to send a request for subscribing.\n Do you want to subscribe directly?`);
+            if (userConfirmed) {
+                if (isProcessing) return; // Prevent multiple requests
+                setIsProcessing(true);
+                try {
+                    await handleSubscribe(serviceId, serviceName, serviceType, isInternetService);
+                    navigate('/user/subscribed-services'); // Navigate to subscribed services page
+                } finally {
+                    setIsProcessing(false);
+                    // Fetch updated data after request
+                    await Promise.all([fetchServices(), fetchSubscribedServices(), fetchPendingRequests()]);
+                }
+            }
+            return; // Exit early
+        }
+    
+        // Existing logic for other conditions
         if (hasSameNameService) {
-            // Show confirmation popup
             const userConfirmed = window.confirm(`You have a subscribed service with the name "${serviceName}" but of a different type (${serviceType}). If you want a new service, please upgrade or terminate the existing service!`);
             if (userConfirmed) {
                 navigate('/user/subscribed-services');
             }
         } else if (combinedTotal < 2) {
             if (isProcessing) return; // Prevent multiple requests
-    
             setIsProcessing(true);
-    
             try {
-                console.log('Sending request for service:', serviceId, serviceName);
                 await handleSubscribe(serviceId, serviceName, serviceType, isInternetService);
+                navigate('/user/pending-requests'); // Navigate to subscribed services page
             } finally {
                 setIsProcessing(false);
-                // Fetch updated data after request
-                console.log('Fetching updated data...');
                 await Promise.all([fetchServices(), fetchSubscribedServices(), fetchPendingRequests()]);
             }
         } else if (combinedTotal === 2) {
-            // Show confirmation popup
             const userConfirmed = window.confirm('You have 2 availed services. If you want a new service, please update or terminate an existing service!');
             if (userConfirmed) {
                 navigate('/user/subscribed-services');
             }
         } else {
-            handleDisabledClick(
-                isSubscribed,
-                totalSubscribed,
-                totalRequested,
-                hasSameNameService
-            );
+            handleDisabledClick(isSubscribed, totalSubscribed, totalRequested, hasSameNameService);
         }
     };
+    
+    
     
 
     const sameNameServiceSubscribed = (serviceName, serviceType, isInternetService) => {
@@ -259,7 +290,7 @@ function Services() {
         <div style={StyleServices}>
             <h1>Internet Services</h1>
             <div className="services-grid">
-                {internetServices.map(service => (
+                {displayedInternetServices.map(service => (
                     service.active && (
                         <ServiceCard
                             key={service.serviceId}
@@ -277,11 +308,20 @@ function Services() {
                         />
                     )
                 ))}
+                <div 
+          className="view-more-btn-container"
+          onClick={handleViewMoreInternet}
+          style={{ backgroundImage: `url(${InternetImage})` }}  // Ensure correct URL format
+        >
+          <button className="btn view-more-btn">
+            {!showMoreInternetServices ? 'View More' : 'Show Less'}
+          </button>
+        </div>
             </div>
 
             <h1>TV Services</h1>
             <div className="services-grid">
-                {tvServices.map(service => (
+                {displayedTvServices.map(service => (
                     service.active && (
                         <ServiceCard
                             key={service.serviceId}
@@ -299,8 +339,17 @@ function Services() {
                         />
                     )
                 ))}
-            </div>
+                <div 
+          className="view-more-btn-container"
+          onClick={handleViewMoreTv}
+          style={{ backgroundImage: `url(${TvImage})` }}  // Ensure correct URL format
+        >
+          <button className="btn view-more-btn">
+            {!showMoreTvServices ? 'View More' : 'Show Less'}
+          </button>
         </div>
+            </div>
+     </div>
     );
 }
 

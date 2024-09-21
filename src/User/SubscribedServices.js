@@ -6,6 +6,8 @@ import './Styling_Components/SubscribeServices.css';
 const SubscribedServices = () => {
     const [internetServices, setInternetServices] = useState([]);
     const [tvServices, setTvServices] = useState([]);
+    const[internetPastServices,setInternetPastServices]=useState([]);
+    const[tvPastServices,setTvPastServices]=useState([]);
     const [error, setError] = useState('');
     const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
@@ -47,6 +49,29 @@ const SubscribedServices = () => {
         }
     }, [userId]);
 
+    useEffect(() => {
+        const fetchPastSubscribedServices = async () => {
+            if (!userId) return;
+
+            try {
+                const response = await axios.get('http://localhost:8082/user/api/subscribed-services/inactive', {
+                    params: { userId },
+                    withCredentials: true
+                });
+                const { internetServicesAvailed, tvServicesAvailed } = response.data;
+                setInternetPastServices(internetServicesAvailed || []);
+                setTvPastServices(tvServicesAvailed || []);
+                setError('');
+            } catch (err) {
+                console.error('Error fetching services:', err);
+                setError('Unable to fetch subscribed services.');
+            }
+        };
+        if (userId) {
+            fetchPastSubscribedServices();
+        }
+    }, [userId]);
+
     const handleModifyTv = (serviceName) => navigate(`/user/modify-tv-subscription?serviceName=${encodeURIComponent(serviceName)}`);
     const handleModifyInternet = (serviceName) => navigate(`/user/modify-internet-subscription?serviceName=${encodeURIComponent(serviceName)}`);
 
@@ -72,14 +97,15 @@ const SubscribedServices = () => {
 
     const filterPastServices = (services) => {
         return services
-            .filter(service => service.endDate && new Date(service.endDate) < currentDate)
-            .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));  // Sort by start date in ascending order
+            .filter(service => service.endDate && new Date(service.endDate) < currentDate)  // Only include past services
+            .sort((a, b) => new Date(a.endDate) - new Date(b.endDate));  // Sort by end date in ascending order
     };
+    
 
     const activeInternetServices = filterActiveAndFutureServices(internetServices);
-    const pastInternetServices = filterPastServices(internetServices);
+    const pastInternetServices = filterPastServices(internetPastServices);
     const activeTvServices = filterActiveAndFutureServices(tvServices);
-    const pastTvServices = filterPastServices(tvServices);
+    const pastTvServices = filterPastServices(tvPastServices);
 
     return (
         <div className="services-container">
@@ -179,8 +205,10 @@ const SubscribedServices = () => {
                         <div className="past-services">
                             <h3>Past Services</h3>
                             {pastInternetServices.length > 0 && (
+                                <>
+                                <h4>Internet Services</h4>
                                 <div className="past-internet-service-section">
-                                    <h4>Internet Services</h4>
+                                    
                                     {pastInternetServices.map(service => (
                                         <div className="service-box inactive" key={service.serviceId}>
                                             <div className="service-header">
@@ -194,11 +222,14 @@ const SubscribedServices = () => {
                                         </div>
                                     ))}
                                 </div>
+                                </>
                             )}
 
                             {pastTvServices.length > 0 && (
+                                <>
+                                <h4>TV Services</h4>
                                 <div className="past-tv-service-section">
-                                    <h4>TV Services</h4>
+                                    
                                     {pastTvServices.map(service => (
                                         <div className="service-box inactive" key={service.serviceId}>
                                             <div className="service-header">
@@ -212,6 +243,7 @@ const SubscribedServices = () => {
                                         </div>
                                     ))}
                                 </div>
+                                </>
                             )}
                         </div>
                     )}

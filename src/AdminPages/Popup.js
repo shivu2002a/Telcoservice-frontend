@@ -15,6 +15,7 @@ function Popup({ service, closePopup }) {
           </>
         ) : null}
         <p><strong>Cost:</strong> Rs.{service.cost}</p>
+        <p><strong>Validity:</strong>{service.validity} Days</p>
       </div>
     </div>
   );

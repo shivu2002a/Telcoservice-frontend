@@ -5,7 +5,6 @@
 .navbar {
   background-color: white; /* Custom background color */
   padding: 1rem;
-  margin-bottom: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
