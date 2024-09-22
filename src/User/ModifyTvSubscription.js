@@ -182,11 +182,11 @@ const ModifyTVSubscription = () => {
                     <h3>Confirm Subscription Update</h3>
                     <p><strong>Current Service Cost:</strong> ${currentService.tvService.cost || 'N/A'}</p>
                     <p><strong>New Service Cost:</strong> ${newServiceToSubscribe.cost || 'N/A'}</p>
-                    <p><strong>Cost Difference:</strong> ${costDifference}</p>
+                    <p><strong>Cost Difference:</strong> ${Math.round(costDifference,2)}</p>
                     <p>
                         {costDifference > 0 ? 
-                            `You will need to pay an additional Rs.${Math.round(costDifference)}. Are you okay with this?` :
-                            `You will be refunded Rs.${Math.abs(Math.round(costDifference))}.`
+                            `You will need to pay an additional Rs.${Math.round(costDifference,2)}. Are you okay with this?` :
+                            `You will be refunded Rs.${Math.abs(Math.round(costDifference,2))}.`
                         }
                     </p>
                     <button onClick={handleConfirmSubscription}>Confirm</button>

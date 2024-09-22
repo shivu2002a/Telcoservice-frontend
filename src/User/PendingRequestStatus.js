@@ -37,7 +37,7 @@ const PendingRequestStatus = () => {
                 const fetchServiceDetails = async (requests) => {
                     const internetServiceIds = [...new Set(requests.filter(req => req.serviceType === 'INTERNET_SERVICE').map(req => req.serviceId))];
                     const tvServiceIds = [...new Set(requests.filter(req => req.serviceType === 'TV_SERVICE').map(req => req.serviceId))];
-                    
+
                     const fetchInternetDetails = async () => {
                         const detailsPromises = internetServiceIds.map(serviceId => 
                             axios.get(`http://localhost:8082/api/internet-services/${serviceId}`, { withCredentials: true })
@@ -81,11 +81,21 @@ const PendingRequestStatus = () => {
         return Array.isArray(benefits) ? benefits.join(', ') : 'No benefits available';
     };
 
+    const getStatusStyle = (status) => {
+        if (status === 'APPROVED') return { color: 'green' };
+        if (status === 'DISAPPROVED') return { color: 'red' };
+        if(status==='REQUESTED') return {color:'blue'};
+        return {}; // Default style
+    };
+    const styleNav={
+        padding:'10px',
+    }
+
     return (
-        <div className="service-container">
+        <div className="service-container" style={styleNav}>
             <h2>Service Requests</h2>
 
-            <h3>Active Requests </h3>
+            <h3>Active Requests</h3>
             {requestedRequests.length === 0 ? (
                 <p>No requested requests found.</p>
             ) : (
@@ -112,7 +122,7 @@ const PendingRequestStatus = () => {
                                     <td>{serviceDetails ? serviceDetails.serviceName : 'Loading...'}</td>
                                     <td>{serviceDetails ? getBenefitsString(serviceDetails.benefits) : 'Loading...'}</td>
                                     <td>{serviceDetails ? serviceDetails.description : 'Loading...'}</td>
-                                    <td>{request.requestStatus}</td>
+                                    <td style={getStatusStyle(request.requestStatus)}><strong>{request.requestStatus}</strong></td>
                                     <td>{request.serviceType}</td>
                                 </tr>
                             );
@@ -149,7 +159,7 @@ const PendingRequestStatus = () => {
                                     <td>{serviceDetails ? serviceDetails.serviceName : 'Loading...'}</td>
                                     <td>{serviceDetails ? getBenefitsString(serviceDetails.benefits) : 'Loading...'}</td>
                                     <td>{serviceDetails ? serviceDetails.description : 'Loading...'}</td>
-                                    <td>{request.requestStatus}</td>
+                                    <td style={getStatusStyle(request.requestStatus)}><strong>{request.requestStatus}</strong></td>
                                     <td>{request.remarks}</td>
                                     <td>{request.serviceType}</td>
                                 </tr>

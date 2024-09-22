@@ -7,18 +7,21 @@ import AutoLogout from './AutoLogout';
 import Services from '../Images/Services.jfif';
 import UpgradeDowngrade from '../Images/UpgradeDowngrade.jfif';
 import Terminate from '../Images/Terminate.jpg';
-import TvServicesList from './TvServicesList'; 
+import TvServicesList from './TvServicesList';
 import InternetServicesList from './InternetServicesList';
 import Slider from "react-slick";
-import FastInternetImage from '../Images/FastInternet.jpg'; // Add image paths for slides
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import FastInternetImage from '../Images/FastInternet.jpg'; 
 import UpdateImage from '../Images/Update.jfif';
 import TvPlans from '../Images/TvPlans.jfif';
-import Compare from '../Images/Compare.jpg'
+import Compare from '../Images/Compare.jpg';
 import Choose from '../Images/Choose.jfif';
 import Login from '../Images/Login.jfif';
 import Explore from '../Images/Explore.jfif';
 import Confirmation from '../Images/Confirmation.jpg';
 import Request from '../Images/Request.jfif';
+
 function App() {
   const backgroundStyle = {
     backgroundImage: `url(${BackgroundImage})`,
@@ -29,16 +32,18 @@ function App() {
     height: '100%',
     width: '100%',
   };
-  
+
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Save the last visited page in local storage
   useEffect(() => {
     if (location.pathname !== '/login' && location.pathname !== '/signup') {
       localStorage.setItem('lastVisitedPage', location.pathname);
     }
   }, [location]);
 
+  // Navigate to the last visited page on page load
   useEffect(() => {
     const lastPage = localStorage.getItem('lastVisitedPage');
     if (lastPage && lastPage !== location.pathname) {
@@ -47,14 +52,17 @@ function App() {
   }, [location, navigate]);
 
   const handleServiceClick = () => {
-    alert("To view more details or subscribe a plan please sign up and login!!")
+    alert("To view more details or subscribe a plan, please sign up and login!");
     navigate('/signup');
   };
 
   const handleViewMoreClick = () => {
-    alert("To view more details or subscribe a plan please sign up and login!!")
+    alert("To view more details or subscribe a plan, please sign up and login!");
     navigate('/signup');
   };
+  const navigateHome=()=>{
+    navigate('/user/home');
+  }
 
   const sliderSettings = {
     dots: true,
@@ -62,16 +70,17 @@ function App() {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
+    autoplay: true,  // Auto slide enabled
+    autoplaySpeed: 3000,  // Slide duration
   };
 
   return (
     <>
       <AutoLogout />
-      <div style={backgroundStyle} className='background'>
+      <div style={backgroundStyle} className="background">
+        {/* Navbar */}
         <nav className="navbar" id="top-navbar">
-          <div className='logo'>
+          <div className="logo" onClick={navigateHome}>
             <img src={TelstraLogo} alt="Logo" className="navbar-image" />
             <h1 className="title">Telcoservice Provisioning</h1>
           </div>
@@ -81,9 +90,10 @@ function App() {
             <li><Link to="/signup">Create an account</Link></li>
           </ul>
         </nav>
+
         <Outlet />
 
-        {/* Sliding Cards Section */}
+        {/* Slider Section */}
         <Slider {...sliderSettings} className="slider-container">
           <div className="slider-card">
             <img src={FastInternetImage} alt="Fast Internet" className="slider-image" />
@@ -96,7 +106,7 @@ function App() {
             <img src={TvPlans} alt="TV Plans" className="slider-image" />
             <div className="slider-content">
               <h3>Flexible TV Plans</h3>
-              <p>Get access to the best TV plans with a wide variety of channels, including basic,standerd content and premium options.</p>
+              <p>Get access to the best TV plans with a wide variety of channels, including basic, standard, and premium options.</p>
             </div>
           </div>
           <div className="slider-card">
@@ -108,70 +118,73 @@ function App() {
           </div>
         </Slider>
 
-        <div className='services'>
+        {/* Services Section */}
+        <div className="services">
           <h2>Our Services</h2>
-          <InternetServicesList onServiceClick={handleServiceClick} onViewMoreClick={handleViewMoreClick}/>
-          <TvServicesList onServiceClick={handleServiceClick} onViewMoreClick={handleViewMoreClick}/> 
+          <InternetServicesList onServiceClick={handleServiceClick} onViewMoreClick={handleViewMoreClick} />
+          <TvServicesList onServiceClick={handleServiceClick} onViewMoreClick={handleViewMoreClick} />
         </div>
-<div className='how'>
-  <div><h2 className='titleHow'>Ready to subscribe!! Here's how?</h2></div>
-        <div class="flowchart">
-  <div class="step">
-    <img src={Explore} alt="Choose a Plan" class="step-image" />
-    <h3>Step 1: Explore Our Plans</h3>
-    <p>Browse through our various plans to find one that suits your needs. Each plan comes with detailed information about the features and benefits.</p>
-  </div>
-  <div class="arrow">→</div>
-  <div class="step">
-    <img src={Compare} alt="Fill in Details" class="step-image" />
-    <h3>Step 2: Compare and Select</h3>
-    <p>Compare the different plans based on your requirements and budget. You can check the plan details, pricing, and included services to make an informed decision.</p>
-  </div>
-  <div class="arrow">→</div>
-  <div class="step">
-    <img src={Login} alt="Sign up or Login" class="step-image" />
-    <h3>Step 3:  Sign Up or Log In</h3>
-    <p>To subscribe to a plan, you'll need to sign up or log in to your account. If you don't have an account, create one using our registration form.</p>
-  </div>
-  <div class="arrow">→</div>
-  <div class="step">
-    <img src={Choose}alt="Choose plan" class="step-image" />
-    <h3>Step 4: Choose Your Plan</h3>
-    <p>After logging in, navigate to the plans section and select the plan you want to subscribe to. Follow the on-screen instructions to complete your subscription.</p>
-  </div>
-  <div class="arrow">→</div>
-  <div class="step">
-    <img src={Request}alt="Send Request" class="step-image" />
-    <h3>Step 5: Send Request</h3>
-    <p>On choosing a plan that suits you on clicking subscrive request is sent to admin and plan activates once admin approves it.</p>
-  </div>
-  <div class="arrow">→</div>
-  <div class="step">
-    <img src={Confirmation} alt="Confirm Subscription" class="step-image" />
-    <h3>Step 6: Confirmation</h3>
-    <p>You will receive a confirmation email with the details of your subscription. If you have any questions or need assistance, feel free to contact our support team.</p>
-  </div>
-</div>
-</div>
 
+        {/* Flowchart Section */}
+        <div className="how">
+          <h2 className="titleHow">Ready to Subscribe? Here's How:</h2>
+          <div className="flowchart">
+            <div className="step">
+              <img src={Explore} alt="Choose a Plan" className="step-image" />
+              <h3>Step 1: Explore Our Plans</h3>
+              <p>Browse through our various plans to find one that suits your needs.</p>
+            </div>
+            <div className="arrow">→</div>
+            <div className="step">
+              <img src={Compare} alt="Compare Plans" className="step-image" />
+              <h3>Step 2: Compare and Select</h3>
+              <p>Compare the different plans based on your requirements and budget.</p>
+            </div>
+            <div className="arrow">→</div>
+            <div className="step">
+              <img src={Login} alt="Sign Up or Log In" className="step-image" />
+              <h3>Step 3: Sign Up or Log In</h3>
+              <p>Create an account or log in to subscribe to a plan.</p>
+            </div>
+            <div className="arrow">→</div>
+            <div className="step">
+              <img src={Choose} alt="Choose Plan" className="step-image" />
+              <h3>Step 4: Choose Your Plan</h3>
+              <p>Select a plan and follow the instructions to complete your subscription.</p>
+            </div>
+            <div className="arrow">→</div>
+            <div className="step">
+              <img src={Request} alt="Send Request" className="step-image" />
+              <h3>Step 5: Send Request</h3>
+              <p>Your request will be processed and activated once approved by admin.</p>
+            </div>
+            <div className="arrow">→</div>
+            <div className="step">
+              <img src={Confirmation} alt="Confirm Subscription" className="step-image" />
+              <h3>Step 6: Confirmation</h3>
+              <p>Receive a confirmation email and enjoy your new plan!</p>
+            </div>
+          </div>
+        </div>
 
+        {/* Why Choose Us Section */}
         <div className="why-choose-us">
           <h2>Why Choose Us?</h2>
           <div className="reasons-row">
             <div className="reason">
               <img src={Services} alt="Fast Internet" className="reason-image" />
               <h3>Fast Internet and Vast Range of Services</h3>
-              <p>Experience blazing fast internet with speeds that keep you connected. We provide various range of services.</p>
+              <p>Enjoy blazing fast internet with various service options.</p>
             </div>
             <div className="reason">
-              <img src={UpgradeDowngrade} alt="Can Upgrade/Downgrade" className="reason-image" />
+              <img src={UpgradeDowngrade} alt="Upgrade/Downgrade" className="reason-image" />
               <h3>Upgrade and Downgrade Plans</h3>
-              <p>Our plans are designed to be cost-effective and to meet your needs we provide various types of upgradation or degradation options.</p>
+              <p>Our plans are flexible with easy upgradation or degradation options.</p>
             </div>
             <div className="reason">
-              <img src={Terminate} alt="Can Terminate" className="reason-image" />
-              <h3>Terminate Plan</h3>
-              <p>We're here for you around the clock to terminate the existing plan if you want to.</p>
+              <img src={Terminate} alt="Terminate Plan" className="reason-image" />
+              <h3>Terminate Plan Anytime</h3>
+              <p>You can terminate your plan anytime with ease.</p>
             </div>
           </div>
         </div>

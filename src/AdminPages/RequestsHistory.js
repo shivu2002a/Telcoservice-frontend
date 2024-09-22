@@ -96,7 +96,7 @@ function RequestsHistory() {
                     {request.serviceActive ? 'Available' : 'Unavailable'}
                   </span></b></td> 
                   <td>{request.serviceCriteria}</td>
-                  <td>{request.requestStatus}</td>
+                  <td><b><span style={{ color: request.requestStatus === 'APPROVED' ? 'green' : 'red' }}>{request.requestStatus}</span></b></td>
                 </tr>
               ))}
           </tbody>

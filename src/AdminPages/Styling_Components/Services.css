@@ -4,7 +4,7 @@
   justify-content: center;
   margin-bottom: 20px;
   button{
-    background-color: black;
+    background-color: black!important;
     color:white;
   }
 }
@@ -68,7 +68,7 @@
 /* View More / Show Less button container for Internet and TV services */
 .view-more-btn-container {
   width: calc(25% + 30px); /* Match the width of a service box */
-  height: 250px;
+  height: 250px!important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,7 +129,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -146,13 +145,13 @@
 
 /* Popup Content */
 .popup-content {
-  background: rgb(67, 67, 150);
   border-radius: 8px;
+  background: rgb(43, 100, 134)!important;
   padding: 20px;
   position: relative;
   width: 90%;
   max-width: 600px;
-  color: white;
+  color: white!important;
 }
 
 /* Close button styling */
