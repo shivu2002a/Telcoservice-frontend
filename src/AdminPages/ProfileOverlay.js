@@ -16,7 +16,7 @@ const ProfileOverlay = ({ onClose, isSliding }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:8082/checkLoggedInUser', { withCredentials: true });
+        const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/checkLoggedInUser', { withCredentials: true });
         setUserData(response.data);
       } catch (err) {
         setError('Failed to fetch user data');

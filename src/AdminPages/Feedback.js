@@ -15,7 +15,7 @@ function Feedback() {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const response = await axios.get('http://localhost:8082/admin/api/feedbacks', { withCredentials: true });
+        const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/admin/api/feedbacks', { withCredentials: true });
         setFeedbacks(response.data);
         setLoading(false);
       } catch (error) {

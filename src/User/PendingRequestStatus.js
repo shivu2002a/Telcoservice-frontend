@@ -11,7 +11,7 @@ const PendingRequestStatus = () => {
     useEffect(() => {
         const fetchLoggedInUser = async () => {
             try {
-                const response = await axios.get('http://localhost:8082/checkLoggedInUser', { withCredentials: true });
+                const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/checkLoggedInUser', { withCredentials: true });
                 setUserId(response.data.userId);
             } catch (err) {
                 setError('Unable to fetch user details.');
@@ -26,7 +26,7 @@ const PendingRequestStatus = () => {
             if (!userId) return;
 
             try {
-                const response = await axios.get('http://localhost:8082/user/api/pending-request', {
+                const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/pending-request', {
                     params: { userId },
                     withCredentials: true
                 });

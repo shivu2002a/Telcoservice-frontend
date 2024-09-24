@@ -41,7 +41,7 @@ const Login = ({ setIsUser, setIsAdmin }) => {
     formData.append('password', password);
       try {
         // First, handle login attempt
-        const response = await axios.post('http://localhost:8082/login', formData, {
+        const response = await axios.post(process.env.REACT_APP_BACKEND_URL+'/login', formData, {
           withCredentials: true,
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -50,7 +50,7 @@ const Login = ({ setIsUser, setIsAdmin }) => {
     
         if (response.status === 200) {
           // Only call checkLoggedInUser if login is successful
-          const roleResponse = await axios.get('http://localhost:8082/checkLoggedInUser', {
+          const roleResponse = await axios.get(process.env.REACT_APP_BACKEND_URL+'/checkLoggedInUser', {
             withCredentials: true,
           });
     

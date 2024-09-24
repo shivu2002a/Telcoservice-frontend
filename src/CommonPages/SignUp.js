@@ -84,7 +84,7 @@ function SignUp() {
     };
 
     try {
-      const response = await axios.post('http://localhost:8082/signup', dataToSubmit);
+      const response = await axios.post(process.env.REACT_APP_BACKEND_URL+'/signup', dataToSubmit);
       alert('Signup successful and Please login in!');
       navigate('/login');
     } catch (error) {

@@ -13,7 +13,7 @@ const MostAvailedServices = () => {
 
   useEffect(() => {
     // Fetch most availed internet services
-    axios.get('http://localhost:8082/admin/api/most-availed-internet-services', { withCredentials: true })
+    axios.get(process.env.REACT_APP_BACKEND_URL+'/admin/api/most-availed-internet-services', { withCredentials: true })
       .then(response => {
         const data = response.data || [];  // Ensure data is an array
         const sortedData = Array.isArray(data) ? data.sort((a, b) => b.subscribedCount - a.subscribedCount) : [];
@@ -22,7 +22,7 @@ const MostAvailedServices = () => {
       .catch(error => console.error('Error fetching internet services:', error));
 
     // Fetch most availed TV services
-    axios.get('http://localhost:8082/admin/api/most-availed-tv-services', { withCredentials: true })
+    axios.get(process.env.REACT_APP_BACKEND_URL+'/admin/api/most-availed-tv-services', { withCredentials: true })
       .then(response => {
         const data = response.data || [];  // Ensure data is an array
         const sortedData = Array.isArray(data) ? data.sort((a, b) => b.subscribedCount - a.subscribedCount) : [];

@@ -15,7 +15,7 @@ const SubscribedServices = () => {
     useEffect(() => {
         const fetchLoggedInUser = async () => {
             try {
-                const response = await axios.get('http://localhost:8082/checkLoggedInUser', { withCredentials: true });
+                const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/checkLoggedInUser', { withCredentials: true });
                 setUserId(response.data.userId);
             } catch (err) {
                 console.error('Error fetching user details:', err);
@@ -30,7 +30,7 @@ const SubscribedServices = () => {
             if (!userId) return;
 
             try {
-                const response = await axios.get('http://localhost:8082/user/api/subscribed-services', {
+                const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/subscribed-services', {
                     params: { userId },
                     withCredentials: true
                 });
@@ -54,7 +54,7 @@ const SubscribedServices = () => {
             if (!userId) return;
 
             try {
-                const response = await axios.get('http://localhost:8082/user/api/subscribed-services/inactive', {
+                const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/subscribed-services/inactive', {
                     params: { userId },
                     withCredentials: true
                 });

@@ -22,7 +22,7 @@ const ModifyInternetSubscription = () => {
     useEffect(() => {
         const fetchLoggedInUser = async () => {
             try {
-                const response = await axios.get('http://localhost:8082/checkLoggedInUser', { withCredentials: true });
+                const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/checkLoggedInUser', { withCredentials: true });
                 setUserId(response.data.userId);
             } catch (err) {
                 setError('Unable to fetch user details.');
@@ -40,7 +40,7 @@ const ModifyInternetSubscription = () => {
             setError(null);
 
             try {
-                const availedResponse = await axios.get('http://localhost:8082/user/api/subscribed-services', {
+                const availedResponse = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/subscribed-services', {
                     params: { userId },
                     withCredentials: true,
                 });
@@ -56,7 +56,7 @@ const ModifyInternetSubscription = () => {
                     );
 
                     const servicePromises = filteredAvailedServices.map(async (service) => {
-                        const servicesResponse = await axios.get('http://localhost:8082/user/api/internet-service/other', {
+                        const servicesResponse = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/internet-service/other', {
                             params: {
                                 serviceName: service.internetService.serviceName,
                                 serviceType: service.internetService.serviceType,

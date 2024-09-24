@@ -40,7 +40,7 @@ function ServicesList({ services, onModify, onTerminate, handleServiceClick, onV
         ))}
         {/* View More / Show Less button */}
         <div 
-          className="view-more-btn-container"
+          className="admin-view-more-btn-container"
           onClick={hasMore ? onViewMore : onShowLess}
           style={{ backgroundImage: `url(${backgroundImage})` }}  // Ensure correct URL format
         >

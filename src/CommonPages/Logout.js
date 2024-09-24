@@ -12,7 +12,7 @@ const Logout = ({ setIsAdmin, setIsUser }) => {
       if (confirmed) {
         try {
           // Call the logout API to clear the session on the server
-          await axios.post('http://localhost:8082/logout', {}, {
+          await axios.post(process.env.REACT_APP_BACKEND_URL+'/logout', {}, {
             withCredentials: true,
           });
 
