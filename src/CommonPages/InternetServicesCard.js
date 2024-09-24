@@ -6,13 +6,13 @@ const InternetServicesCard = ({ service, onClick }) => {
   return (
     <div className="service-card" onClick={() => onClick(service.serviceId)}>
       <h3>{service.serviceName}</h3>
-      <p>Type:{service.serviceType}</p>
       <p>{service.description}</p>
-      <p>Benefits:{service.benefits}</p>
-      <p>Download Speed: {service.serviceDownloadSpeed} Mbps</p>
-      <p>Upload Speed: {service.serviceUploadSpeed} Mbps</p>
-      <p>Cost: Rs.{service.cost}</p>
-      <p>Validity: {service.validity} Days</p>
+      <p><strong>Type:</strong>{service.serviceType}</p>
+      <p><strong>Benefits:</strong>{service.benefits}</p>
+      <p><strong>Download Speed:</strong> {service.serviceDownloadSpeed} Mbps</p>
+      <p><strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
+      <p><strong>Cost: </strong>Rs.{service.cost}</p>
+      <p><strong>Validity:</strong> {service.validity} Days</p>
     </div>
   );
 };
