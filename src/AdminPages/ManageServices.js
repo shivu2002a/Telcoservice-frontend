@@ -15,8 +15,13 @@ function ManageServices() {
   const [displayedInternetCount, setDisplayedInternetCount] = useState(5);
   const [displayedTvCount, setDisplayedTvCount] = useState(5);
   const [selectedService, setSelectedService] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [serviceToTerminate, setServiceToTerminate] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate();
 
+  // Fetching internet services
   useEffect(() => {
     axios
       .get(`http://localhost:8082/admin/api/internet-service`, { withCredentials: true })
@@ -28,6 +33,7 @@ function ManageServices() {
       });
   }, []);
 
+  // Fetching TV services
   useEffect(() => {
     axios
       .get(`http://localhost:8082/admin/api/tv-service`, { withCredentials: true })
@@ -45,40 +51,45 @@ function ManageServices() {
     navigate(`/admin/updateInternet`, { state: { serviceId } });
   };
 
-  const handleTerminateInternetService = serviceId => {
-    const confirmTermination = window.confirm('Are you sure you want to terminate this service?');
-    if (confirmTermination) {
-      axios
-        .delete(`http://localhost:8082/admin/api/internet-service?id=${serviceId}`, { withCredentials: true })
-        .then(() => {
-          alert('Service successfully terminated.');
-          setInternetServices(prevServices => prevServices.filter(service => service.serviceId !== serviceId));
-          navigate('/admin/manageServices')
-        })
-        .catch(() => {
-          alert('Error terminating service.');
-        });
-    }
-  };
-
   const handleModifyTvService = serviceId => {
     navigate(`/admin/updateTv`, { state: { serviceId } });
   };
 
-  const handleTerminateTvService = serviceId => {
-    const confirmTermination = window.confirm('Are you sure you want to terminate this service?');
-    if (confirmTermination) {
-      axios
-        .delete(`http://localhost:8082/admin/api/tv-service?id=${serviceId}`, { withCredentials: true })
-        .then(() => {
-          alert('Service successfully terminated.');
+  const confirmTermination = serviceId => {
+    setServiceToTerminate(serviceId);
+    setShowConfirm(true);
+  };
+
+  const handleTerminateService = (serviceId, isTv) => {
+    const apiEndpoint = isTv 
+      ? `http://localhost:8082/admin/api/tv-service?id=${serviceId}`
+      : `http://localhost:8082/admin/api/internet-service?id=${serviceId}`;
+
+    axios
+      .delete(apiEndpoint, { withCredentials: true })
+      .then(() => {
+        setAlertMessage('Service successfully terminated.');
+        setShowAlert(true);
+        if (isTv) {
           setTvServices(prevServices => prevServices.filter(service => service.serviceId !== serviceId));
-          navigate('/admin/manageServices')
-        })
-        .catch(() => {
-          alert('Error terminating service.');
-        });
-    }
+        } else {
+          setInternetServices(prevServices => prevServices.filter(service => service.serviceId !== serviceId));
+        }
+        setShowConfirm(false);
+      })
+      .catch(() => {
+        setAlertMessage('Error terminating service.');
+        setShowAlert(true);
+        setShowConfirm(false);
+      });
+  };
+
+  const handleTerminateInternetService = serviceId => {
+    confirmTermination(serviceId);
+  };
+
+  const handleTerminateTvService = serviceId => {
+    confirmTermination(serviceId);
   };
 
   const handleAddService = serviceType => {
@@ -92,6 +103,15 @@ function ManageServices() {
 
   const closePopup = () => {
     setSelectedService(null);
+  };
+
+  const closeAlert = () => {
+    setShowAlert(false);
+  };
+
+  const closeConfirm = () => {
+    setShowConfirm(false);
+    setServiceToTerminate(null);
   };
 
   const activeInternetServices = internetServices.filter(service => service.active);
@@ -129,15 +149,14 @@ function ManageServices() {
             </button>
           </div>
 
-          
           <div className="services-section">
-          <h1>Available Internet Services</h1>
+            <h1>Available Internet Services</h1>
             <div className="services-container">
               <Suspense fallback={<div>Loading Services...</div>}>
                 <ServicesList
                   services={displayedInternetServices}
                   onModify={handleModifyInternetService}
-                  onTerminate={handleTerminateInternetService}
+                  onTerminate={handleTerminateInternetService} 
                   handleServiceClick={handleServiceClick}
                   onViewMore={showMoreInternetServices}
                   onShowLess={showLessInternetServices}
@@ -155,13 +174,13 @@ function ManageServices() {
           </div>
 
           <div className="services-section">
-          <h1>Available TV Services</h1>
+            <h1>Available TV Services</h1>
             <div className="services-container">
               <Suspense fallback={<div>Loading Services...</div>}>
                 <ServicesList
                   services={displayedTvServices}
                   onModify={handleModifyTvService}
-                  onTerminate={handleTerminateTvService}
+                  onTerminate={handleTerminateTvService} 
                   handleServiceClick={handleServiceClick}
                   onViewMore={showMoreTvServices}
                   onShowLess={showLessTvServices}
@@ -178,6 +197,29 @@ function ManageServices() {
           </Suspense>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>Are you sure you want to terminate this service?</p>
+            <div className="button-container">
+              <button onClick={() => handleTerminateService(serviceToTerminate, false)} className="btn btn-danger">Yes</button>
+              <button onClick={closeConfirm} className="btn btn-secondary">No</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Alert Modal */}
+      {showAlert && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>{alertMessage}</p>
+            <button onClick={closeAlert}>OK</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

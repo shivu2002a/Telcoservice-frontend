@@ -4,7 +4,8 @@ import ServiceCard from './ServiceCard.js';
 import StyleServices from './Styling_Components/Services.css';
 import { useNavigate } from 'react-router-dom';
 import TvImage from '../Images/Tv.jpg';
-import InternetImage from '../Images/Internet.jfif'
+import InternetImage from '../Images/Internet.jfif';
+import AlertModal from './AlertModal.js';
 
 function Services() {
     const [internetServices, setInternetServices] = useState([]);
@@ -14,9 +15,25 @@ function Services() {
     const [pendingRequests, setPendingRequests] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
-    const [isProcessing, setIsProcessing] = useState(false);
     const [showMoreInternetServices, setShowMoreInternetServices] = useState(false); // New state for Internet services
     const [showMoreTvServices, setShowMoreTvServices] = useState(false); // New state for TV services
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [onAlertOk, setOnAlertOk] = useState(null);
+    
+
+const handleAlertOk = () => {
+    setShowAlert(false);  // Close the alert
+    if (onAlertOk) {
+        console.log("OK clicked"); 
+        onAlertOk();  // Execute the callback (navigate)
+        setOnAlertOk(null);  // Reset callback to avoid repeated execution
+    }
+};
+
+const handleAlertCancel = () => {
+    setShowAlert(false);  // Just close the alert
+};
     const navigate = useNavigate();
 
     // Fetch services data
@@ -151,76 +168,68 @@ function Services() {
             });
             console.log('Request sent successfully for:', serviceId);
     
-            // Check if the service has no criteria
             const service = isInternetService ? internetServices.find(s => s.serviceId === serviceId) : tvServices.find(s => s.serviceId === serviceId);
+            
+            let alertMessage;
+            let redirectPath;
+    
             if (service && !service.criteria) {
-                navigate('/user/subscribed-services'); // Navigate directly to subscribed services
-                window.alert('You have been subscribed directly! Redirecting to subscribed services...');
+                alertMessage = 'You have been subscribed directly! Redirecting to subscribed services...';
+                redirectPath = '/user/subscribed-services';
             } else {
-                navigate('/user/pending-requests'); // Navigate to pending requests for other cases
-                window.alert('Request sent successfully! Redirecting to pending requests...');
+                alertMessage = 'Request sent successfully! Redirecting to pending requests...';
+                redirectPath = '/user/pending-requests';
             }
+    
+            setAlertMessage(alertMessage);
+            setShowAlert(true);
+            setOnAlertOk(() => () => {
+                navigate(redirectPath);
+            });
+    
         } catch (err) {
-            window.alert('Error sending request.');
+            setAlertMessage('Error sending request.');
+            setShowAlert(true);
             console.error('Error sending request:', err);
         }
     };
     
-
     const handleButtonClick = async (serviceId, serviceName, serviceType, isInternetService) => {
         const totalSubscribed = countSubscribedServices(isInternetService);
         const totalRequested = countRequestedServices(isInternetService);
         const combinedTotal = totalSubscribed + totalRequested;
-    
         const isSubscribed = isUserSubscribed(serviceId, isInternetService);
         const hasSameNameService = sameNameServiceSubscribed(serviceName, serviceType, isInternetService);
     
-        // Check if the service has empty criteria
         const service = isInternetService ? internetServices.find(s => s.serviceId === serviceId) : tvServices.find(s => s.serviceId === serviceId);
-        
+    
         if (service && !service.criteria) {
-            const userConfirmed = window.confirm(`For ${serviceName} service there is no need to send a request for subscribing.\n Do you want to subscribe directly?`);
-            if (userConfirmed) {
-                if (isProcessing) return; // Prevent multiple requests
-                setIsProcessing(true);
-                try {
-                    await handleSubscribe(serviceId, serviceName, serviceType, isInternetService);
-                    navigate('/user/subscribed-services'); // Navigate to subscribed services page
-                } finally {
-                    setIsProcessing(false);
-                    // Fetch updated data after request
-                    await Promise.all([fetchServices(), fetchSubscribedServices(), fetchPendingRequests()]);
-                }
-            }
-            return; // Exit early
+            setAlertMessage(`For ${serviceName} service, there is no need to send a request for subscribing. You will be subscribed directly.`);
+            setShowAlert(true);
+            setTimeout(() => {
+                handleSubscribe(serviceId, serviceName, serviceType, isInternetService);
+            }, 2000); // Delay of 2 seconds
+            return;
         }
     
-        // Existing logic for other conditions
         if (hasSameNameService) {
-            const userConfirmed = window.confirm(`You have a subscribed service with the name "${serviceName}" but of a different type (${serviceType}). If you want a new service, please upgrade or terminate the existing service!`);
-            if (userConfirmed) {
+            setAlertMessage(`You have a subscribed service with the name "${serviceName}" but of a different type (${serviceType}). If you want a new service, please upgrade or terminate the existing service!`);
+            setShowAlert(true);
+            setOnAlertOk(() => () => {
                 navigate('/user/subscribed-services');
-            }
+            });
         } else if (combinedTotal < 2) {
-            if (isProcessing) return; // Prevent multiple requests
-            setIsProcessing(true);
-            try {
-                await handleSubscribe(serviceId, serviceName, serviceType, isInternetService);
-                navigate('/user/pending-requests'); // Navigate to subscribed services page
-            } finally {
-                setIsProcessing(false);
-                await Promise.all([fetchServices(), fetchSubscribedServices(), fetchPendingRequests()]);
-            }
+            await handleSubscribe(serviceId, serviceName, serviceType, isInternetService);
         } else if (combinedTotal === 2) {
-            const userConfirmed = window.confirm('You have 2 availed services. If you want a new service, please update or terminate an existing service!');
-            if (userConfirmed) {
+            setAlertMessage('You have 2 availed services. If you want a new service, please update or terminate an existing service!');
+            setShowAlert(true);
+            setOnAlertOk(() => () => {
                 navigate('/user/subscribed-services');
-            }
+            });
         } else {
             handleDisabledClick(isSubscribed, totalSubscribed, totalRequested, hasSameNameService);
         }
     };
-    
     
     
 
@@ -272,15 +281,38 @@ function Services() {
     };
 
     const handleDisabledClick = (isSubscribed, totalSubscribed, totalRequested, hasSameNameService) => {
+        let message = '';
+    
         if (isSubscribed) {
-            window.alert(`You have already subscribed to this service!!`);
+            message = 'You have already subscribed to this service!!';
         } else if (hasSameNameService) {
-            window.alert(`You have already subscribed to a service with the same name but of a different type. Please upgrade or downgrade your existing service.`);
-            navigate('/user/subscribed-services');
-        } else {
-            window.alert(`You have already availed ${totalSubscribed} services and requested ${totalRequested} services.\nIf you want a new service, please terminate a service or update an existing service.`);
+            message = 'You have already subscribed to a service with the same name but of a different type. Please upgrade or downgrade your existing service.';
+        } else if(totalSubscribed===0){
+            message=`You have already requested ${totalRequested} services and wait for the request approval. Check for the request status..`;
+        }else {
+            message = `You have already availed ${totalSubscribed} services and requested ${totalRequested} services.\nIf you want a new service, please terminate a service or update an existing service.`;
         }
+    
+        // Set the alert message and show the modal
+        setAlertMessage(message);
+        setShowAlert(true);
+    
+        // Set the callback for navigation if needed
+        setOnAlertOk(() => () => {
+            if(!isSubscribed)
+            {
+                if(totalSubscribed===0)
+                    navigate('/user/pending-requests');
+                else{
+                console.log("Navigating to subscribed services"); 
+                navigate('/user/subscribed-services');
+                }
+            }
+        });
     };
+    
+    
+    
     
 
     if (loading) return <div>Loading...</div>;
@@ -349,6 +381,13 @@ function Services() {
           </button>
         </div>
             </div>
+            {showAlert && (
+            <AlertModal
+                message={alertMessage}
+                onOk={handleAlertOk}     // Triggered when OK is clicked
+                onCancel={handleAlertCancel} // Triggered when Cancel or close is clicked
+            />
+        )}
      </div>
     );
 }

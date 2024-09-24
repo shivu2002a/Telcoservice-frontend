@@ -287,3 +287,25 @@ body {
     color:rgb(94, 94, 205);
   }
 }
+
+.slick-dots {
+  bottom: 10px; /* Adjust vertical position */
+  display: flex !important; /* Ensure the dots are displayed inline */
+  justify-content: center; /* Center the dots */
+}
+
+.slick-dots li {
+  margin: 0 5px; /* Space between dots */
+}
+
+.slick-dots li button {
+  display: none; /* Hide the button */
+}
+
+.slick-dots li.slick-active{
+  display: block; /* Show only active dot */
+  width: 10px; /* Set width */
+  height: 10px; /* Set height */
+  background: blue; /* Color for active dot */
+  border-radius: 50%; /* Circular dot */
+}

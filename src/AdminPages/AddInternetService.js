@@ -14,11 +14,13 @@ function AddInternetService() {
     cost: '',
     description: '',
     serviceType: 'BASIC',
-    validity:'',
+    validity: '',
   });
 
-  const [loading, setLoading] = useState(false);  // For loading state
-  const [error, setError] = useState(null);       // For error handling
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   // Handle input changes for form fields
   const handleChange = (e) => {
@@ -32,16 +34,16 @@ function AddInternetService() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);   // Start loading
-    setError(null);     // Reset any previous errors
+    setLoading(true);
+    setError(null);
 
     try {
       // Call the API to add the service
       await axios.post('http://localhost:8082/admin/api/internet-service', formData, { withCredentials: true });
 
-      alert("Service added successfully!!");
-      navigate(`/admin/addInternetService`);
-
+      setModalMessage("Service added successfully!");
+      setShowModal(true);
+      
       // Reset form fields after submission
       setFormData({
         serviceName: '',
@@ -52,15 +54,19 @@ function AddInternetService() {
         cost: '',
         description: '',
         serviceType: 'BASIC',
-        validity:'',
+        validity: '',
       });
     } catch (err) {
       console.error(err);
-      // Set error message for display
       setError('Failed to add service. Please try again.');
     } finally {
-      setLoading(false);  // End loading
+      setLoading(false);
     }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    navigate(`/admin/addInternetService`);
   };
 
   return (
@@ -146,8 +152,9 @@ function AddInternetService() {
             onChange={handleChange}
           />
         </div>
+
         <div>
-          <label>Validity:</label>Days
+          <label>Validity:</label> Days
           <input
             type="text"
             name="validity"
@@ -156,8 +163,9 @@ function AddInternetService() {
             required
           />
         </div>
+
         <div>
-          <label>Cost:</label>Rs.
+          <label>Cost:</label> Rs.
           <input
             type="text"
             name="cost"
@@ -173,6 +181,16 @@ function AddInternetService() {
 
         {error && <p className="error">{error}</p>} {/* Display error if any */}
       </form>
+
+      {/* Modal for success message */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>{modalMessage}</p>
+            <button onClick={closeModal} className="btn">OK</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

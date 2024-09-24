@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Styling_Components/FeedbackForm.css'; // Import the CSS file
@@ -9,6 +9,10 @@ const InternetFeedback = () => {
     const { service = {} } = location.state || {};
     const [feedback, setFeedback] = useState('');
     const [error, setError] = useState('');
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State to control confirmation modal
+    const [isAlertOpen, setIsAlertOpen] = useState(false); // State to control success modal
+    const [alertMessage, setAlertMessage] = useState(''); // State to hold alert message
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // State to control success modal after termination
 
     const handleFeedbackChange = (e) => setFeedback(e.target.value);
 
@@ -16,11 +20,21 @@ const InternetFeedback = () => {
         e.preventDefault();
 
         if (!feedback.trim()) {
-            alert('Please enter your feedback.');
+            setAlertMessage('Please enter your feedback.');
+            setIsAlertOpen(true);
             return;
         }
 
+        // Open confirmation modal before proceeding
+        setIsConfirmModalOpen(true);
+    };
+
+    const handleConfirm = async () => {
         try {
+            // Close the confirmation modal
+            setIsConfirmModalOpen(false);
+
+            // Submit feedback
             await axios.post('http://localhost:8082/user/api/internet-service/feedback', null, {
                 params: { availedServiceId: service.serviceId, feedback },
                 withCredentials: true
@@ -54,10 +68,10 @@ const InternetFeedback = () => {
                 params: { availedServiceId: service.serviceId, startDate: formattedDate.toISOString().split('T')[0] },
                 withCredentials: true
             });
-            window.confirm('Do you want to submit feedback and terminate the service?');
-            alert('Feedback submitted successfully and service got terminated successfully!!!');
-            console.log('Internet service terminated successfully.');
-            navigate('/user/services');
+
+            // Show success modal after successful termination
+            setIsSuccessModalOpen(true);
+
         } catch (err) {
             console.error('Error terminating Internet service:', err);
             setError('Failed to terminate Internet service.');
@@ -72,6 +86,43 @@ const InternetFeedback = () => {
                 <button type="submit">Submit Feedback</button>
                 {error && <p className="error-message">{error}</p>}
             </form>
+
+            {/* Custom Confirmation Modal */}
+            {isConfirmModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>Confirm Action</h3>
+                        <p>Do you want to submit feedback and terminate the service?</p>
+                        <button onClick={handleConfirm}>Yes</button>
+                        <button onClick={() => setIsConfirmModalOpen(false)}>No</button>
+                    </div>
+                </div>
+            )}
+
+            {/* Custom Alert Modal */}
+            {isAlertOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>Notification</h3>
+                        <p>{alertMessage}</p>
+                        <button onClick={() => setIsAlertOpen(false)}>OK</button>
+                    </div>
+                </div>
+            )}
+
+            {/* Custom Success Modal */}
+            {isSuccessModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>Success</h3>
+                        <p>Feedback submitted successfully, and the service has been terminated.</p>
+                        <button onClick={() => {
+                            setIsSuccessModalOpen(false);
+                            navigate('/user/services');
+                        }}>OK</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

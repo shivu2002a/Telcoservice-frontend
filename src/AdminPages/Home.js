@@ -68,6 +68,28 @@ function Home() {
     autoplay: true,
     autoplaySpeed: 3000,
     lazyLoad: false,  // Ensure lazy load is disabled
+    arrows:false,
+  };
+
+  const footerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '20px',
+    backgroundColor: 'white',
+    position: 'relative',
+    bottom: '0',
+    width: '100%',
+  };
+
+  const logoStyle = {
+    height: '30px', // Smaller icon size
+    marginRight: '10px', // Add spacing between the logo and email
+  };
+
+  const emailStyle = {
+    fontSize: '20px',
+    color: '#333',
   };
 
   return (
@@ -171,6 +193,10 @@ function Home() {
             </div>
           </div>
         </div>
+        <footer style={footerStyle}>
+          <img src={TelstraLogo} alt="Logo" style={logoStyle} />
+          <span style={emailStyle}>© 2024 Telecomservice Provisioning. All rights reserved.</span>
+        </footer>
       </div>
     </>
   );
