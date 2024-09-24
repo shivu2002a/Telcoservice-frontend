@@ -41,8 +41,8 @@ const handleAlertCancel = () => {
         try {
             console.log('Fetching services...');
             const [internetResponse, tvResponse] = await Promise.all([
-                axios.get('http://localhost:8082/api/internet-services/', { withCredentials: true }),
-                axios.get('http://localhost:8082/api/tv-services/', { withCredentials: true }),
+                axios.get(process.env.REACT_APP_BACKEND_URL+'/api/internet-services/', { withCredentials: true }),
+                axios.get(process.env.REACT_APP_BACKEND_URL+'/api/tv-services/', { withCredentials: true }),
             ]);
 
             setInternetServices(internetResponse.data || []);
@@ -70,7 +70,7 @@ const handleAlertCancel = () => {
     const fetchSubscribedServices = useCallback(async () => {
         try {
             console.log('Fetching subscribed services...');
-            const response = await axios.get('http://localhost:8082/user/api/subscribed-services', { withCredentials: true });
+            const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/subscribed-services', { withCredentials: true });
             const { internetServicesAvailed, tvServicesAvailed } = response.data;
     
             // Fetch details for each service
@@ -104,7 +104,7 @@ const handleAlertCancel = () => {
     const fetchPendingRequests = useCallback(async () => {
         try {
             console.log('Fetching pending requests...');
-            const response = await axios.get('http://localhost:8082/user/api/pending-request', { withCredentials: true });
+            const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/pending-request', { withCredentials: true });
             console.log('Pending requests data:', response.data);
 
             setPendingRequests(response.data || []);
@@ -157,8 +157,8 @@ const handleAlertCancel = () => {
 
     const handleSubscribe = async (serviceId, serviceName, serviceType, isInternetService) => {
         const apiUrl = isInternetService
-            ? 'http://localhost:8082/user/api/internet-service'
-            : 'http://localhost:8082/user/api/tv-service';
+            ? process.env.REACT_APP_BACKEND_URL+'/user/api/internet-service'
+            : process.env.REACT_APP_BACKEND_URL+'/user/api/tv-service';
     
         try {
             console.log('Sending request to subscribe to:', apiUrl);

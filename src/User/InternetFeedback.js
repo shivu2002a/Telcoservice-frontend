@@ -35,7 +35,7 @@ const InternetFeedback = () => {
             setIsConfirmModalOpen(false);
 
             // Submit feedback
-            await axios.post('http://localhost:8082/user/api/internet-service/feedback', null, {
+            await axios.post(process.env.REACT_APP_BACKEND_URL+'/user/api/internet-service/feedback', null, {
                 params: { availedServiceId: service.serviceId, feedback },
                 withCredentials: true
             });
@@ -64,7 +64,7 @@ const InternetFeedback = () => {
         }
 
         try {
-            await axios.delete('http://localhost:8082/user/api/internet-service', {
+            await axios.delete(process.env.REACT_APP_BACKEND_URL+'/user/api/internet-service', {
                 params: { availedServiceId: service.serviceId, startDate: formattedDate.toISOString().split('T')[0] },
                 withCredentials: true
             });

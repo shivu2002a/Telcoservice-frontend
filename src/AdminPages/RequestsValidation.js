@@ -19,7 +19,7 @@ function RequestsValidation() {
         }
 
         try {
-            const response = await axios.patch('http://localhost:8082/admin/api/approval-requests', {
+            const response = await axios.patch(process.env.REACT_APP_BACKEND_URL+'/admin/api/approval-requests', {
                 requestId: request.requestId,
                 requestStatus: status,
                 remarks: remarks,

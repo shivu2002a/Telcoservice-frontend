@@ -66,9 +66,10 @@
 }
 
 /* View More / Show Less button container for Internet and TV services */
-.view-more-btn-container {
+.admin-view-more-btn-container {
   width: calc(25% + 30px); /* Match the width of a service box */
-  height: 250px!important;
+  height: 260px!important;
+  margin-top:7px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,7 +83,7 @@
 }
 
 /* View More button styling */
-.view-more-btn-container:hover .view-more-btn {
+.admin-view-more-btn-container:hover .view-more-btn {
   color: white;
   background-color: rgba(142, 2, 2, 0.678)!important;
 }

@@ -11,7 +11,7 @@ function RequestsHistory() {
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:8082/admin/api/approval-requests', { withCredentials: true });
+        const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/admin/api/approval-requests', { withCredentials: true });
         const requests = response.data;
 
         // Fetch user and service names for each request

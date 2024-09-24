@@ -37,7 +37,7 @@ function AddTvService() {
 
     try {
       // Call the API to add the service
-      await axios.post('http://localhost:8082/admin/api/tv-service', formData, { withCredentials: true });
+      await axios.post(process.env.REACT_APP_BACKEND_URL+'/admin/api/tv-service', formData, { withCredentials: true });
 
       setModalMessage("Service added successfully!");
       setShowModal(true);

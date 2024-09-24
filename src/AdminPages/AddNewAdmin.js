@@ -65,8 +65,8 @@ function AddNewAdmin() {
 
     try {
       setChecking(true);
-      await axios.post('http://localhost:8082/signup', dataToSubmit);
-      setModalMessage('Admin created successfully! Please login.');
+      await axios.post(process.env.REACT_APP_BACKEND_URL+'/signup', dataToSubmit);
+      setModalMessage('Admin created successfully!');
       setShowModal(true);
     } catch (error) {
       console.error('Signup error:', error.response);
