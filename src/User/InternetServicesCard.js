@@ -5,7 +5,6 @@ import './Styling_Components/App.css';
 const InternetServicesCard = ({ service, onClick }) => {
   return (
     <div className="service-card" onClick={() => onClick(service.serviceId)}>
-      <div className="service-card" onClick={() => onClick(service.serviceId)}>
       <h3>{service.serviceName}</h3>
       <p>{service.description}</p>
       <p><strong>Type:</strong>{service.serviceType}</p>
@@ -14,7 +13,6 @@ const InternetServicesCard = ({ service, onClick }) => {
       <p><strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
       <p><strong>Cost: </strong>Rs.{service.cost}</p>
       <p><strong>Validity:</strong> {service.validity} Days</p>
-    </div>
     </div>
   );
 };
