@@ -60,9 +60,10 @@ function App() {
     alert("To view more details or subscribe a plan, please sign up and login!");
     navigate('/signup');
   };
-  const navigateHome=()=>{
+
+  const navigateHome = () => {
     navigate('/user/home');
-  }
+  };
 
   const sliderSettings = {
     dots: true,
@@ -72,6 +73,27 @@ function App() {
     slidesToScroll: 1,
     autoplay: true,  // Auto slide enabled
     autoplaySpeed: 3000,  // Slide duration
+  };
+
+  const footerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '20px',
+    backgroundColor: 'white',
+    position: 'relative',
+    bottom: '0',
+    width: '100%',
+  };
+
+  const logoStyle = {
+    height: '30px', // Smaller icon size
+    marginRight: '10px', // Add spacing between the logo and email
+  };
+
+  const emailStyle = {
+    fontSize: '20px',
+    color: '#333',
   };
 
   return (
@@ -188,6 +210,12 @@ function App() {
             </div>
           </div>
         </div>
+        
+        <footer style={footerStyle}>
+          <img src={TelstraLogo} alt="Logo" style={logoStyle} />
+          <span style={emailStyle}>© 2024 Telecomservice Provisioning. All rights reserved.</span>
+        </footer>
+
       </div>
     </>
   );

@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function AddNewAdmin() {
-
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
     phonenumber: '',
-    address: 'admin'  // Default value for address
+    address: 'admin' // Default value for address
   });
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [checking, setChecking] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,28 +54,33 @@ function AddNewAdmin() {
       return;
     }
 
-    // Prepare the data to be sent to the backend
     const dataToSubmit = {
       username: formData.username,
       email: formData.email,
       password: formData.password,
       phonenumber: formData.phonenumber,
-      address: formData.address,  // Include address in the request
-      role: 'ROLE_ADMIN'  // Set role to ROLE_ADMIN
+      address: formData.address,
+      role: 'ROLE_ADMIN'
     };
 
     try {
       setChecking(true);
-      const response = await axios.post('http://localhost:8082/signup', dataToSubmit);
-      console.log(dataToSubmit);
-      console.log(response);
-      alert('Admin created successfully! Please login.');
-      navigate('/login');  // Redirect to login page after successful creation
+      await axios.post('http://localhost:8082/signup', dataToSubmit);
+      setModalMessage('Admin created successfully! Please login.');
+      setShowModal(true);
     } catch (error) {
       console.error('Signup error:', error.response);
-      alert('Creation failed. Please try again.');
+      setModalMessage('Creation failed. Please try again.');
+      setShowModal(true);
     } finally {
       setChecking(false);
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    if (modalMessage.includes('successfully')) {
+      navigate('/login');
     }
   };
 
@@ -151,8 +157,40 @@ function AddNewAdmin() {
           </button>
         </form>
       </div>
+
+      {/* Modal for success/error message */}
+      {showModal && (
+        <div style={modalOverlayStyle}>
+          <div style={modalContentStyle}>
+            <p>{modalMessage}</p>
+            <button onClick={closeModal} className="btn">OK</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
+
+// Modal styles
+const modalOverlayStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 1000
+};
+
+const modalContentStyle = {
+  background: 'white',
+  padding: '20px',
+  borderRadius: '8px',
+  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+  textAlign: 'center'
+};
 
 export default AddNewAdmin;

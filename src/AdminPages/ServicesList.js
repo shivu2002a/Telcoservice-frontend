@@ -14,8 +14,8 @@ function ServicesList({ services, onModify, onTerminate, handleServiceClick, onV
           <div
             className="service-box"
             key={service.serviceId}
-            onClick={() => handleServiceClick(service)}
           >
+            <div className="service-details" onClick={() => handleServiceClick(service)}>
             <h2>
               <strong>{service.serviceName}</strong>
               <p>({service.serviceType})</p>
@@ -27,6 +27,7 @@ function ServicesList({ services, onModify, onTerminate, handleServiceClick, onV
             <h2>
               <strong>{service.validity} Days</strong>
             </h2>
+            </div>
             <div className="service-buttons">
               <button onClick={() => onModify(service.serviceId)} className="btn modify-btn">
                 Modify

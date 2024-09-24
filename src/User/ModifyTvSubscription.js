@@ -12,6 +12,7 @@ const ModifyTVSubscription = () => {
     const [confirmDialog, setConfirmDialog] = useState(false);
     const [costDifference, setCostDifference] = useState(0);
     const [newServiceToSubscribe, setNewServiceToSubscribe] = useState(null);
+    const [successDialog, setSuccessDialog] = useState(false); // New state for success dialog
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -129,8 +130,13 @@ const ModifyTVSubscription = () => {
             console.log('Subscription Update Response:', response);
 
             if (response.status === 200 || response.status === 204) {
-                window.alert('Subscription updated successfully!');
-                navigate('/user/subscribed-services');
+                setSuccessDialog(true); // Show success dialog
+                setError(null);
+                setConfirmDialog(false); // Close the confirmation dialog
+                setTimeout(() => {
+                    setSuccessDialog(false); // Auto-close success dialog after 3 seconds
+                    navigate('/user/subscribed-services');
+                }, 3000);
             } else {
                 setError('Failed to update the subscription. Please try again.');
                 console.error('Unexpected response status:', response.status);
@@ -148,12 +154,42 @@ const ModifyTVSubscription = () => {
         }
     };
 
+    const dialogStyle = {
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: 'white',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+        padding: '20px',
+        zIndex: 1000,
+        width: '500px',
+    };
+
+    const successStyle = {
+        position: 'fixed',
+        top: '20%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: 'green',
+        color: 'white',
+        padding: '15px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+        zIndex: 1000,
+        width: '300px',
+        textAlign: 'center',
+    };
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
         <div className="services-container">
             <h2>Modify TV Subscription</h2>
+            {successDialog && <div style={successStyle}>Subscription updated successfully!</div>} {/* Success message */}
             {filteredServices.length > 0 ? (
                 <div className="services-grid">
                     {filteredServices.map((service) => (
@@ -163,9 +199,6 @@ const ModifyTVSubscription = () => {
                                 <p><strong>Type:</strong> {service.serviceType}</p>
                                 <p><strong>Description:</strong> {service.description}</p>
                                 <p><strong>Benefits:</strong> {service.benefits}</p>
-                                <div className="speed-info">
-                                    <p><span className="icon">📺</span> <strong>Channel Count:</strong> {service.channelCount}</p>
-                                </div>
                                 <p className="plan-cost">${service.cost}</p>
                                 <button className="subscribe-button" onClick={() => handleSubscribe(service)}>Modify Subscription</button>
                             </div>
@@ -178,15 +211,15 @@ const ModifyTVSubscription = () => {
 
             {/* Confirmation Dialog */}
             {confirmDialog && (
-                <div className="confirm-dialog">
+                <div style={dialogStyle}>
                     <h3>Confirm Subscription Update</h3>
                     <p><strong>Current Service Cost:</strong> ${currentService.tvService.cost || 'N/A'}</p>
                     <p><strong>New Service Cost:</strong> ${newServiceToSubscribe.cost || 'N/A'}</p>
-                    <p><strong>Cost Difference:</strong> ${Math.round(costDifference,2)}</p>
+                    <p><strong>Cost Difference:</strong> ${Math.round(costDifference, 2)}</p>
                     <p>
                         {costDifference > 0 ? 
-                            `You will need to pay an additional Rs.${Math.round(costDifference,2)}. Are you okay with this?` :
-                            `You will be refunded Rs.${Math.abs(Math.round(costDifference,2))}.`
+                            `You will need to pay an additional Rs.${Math.round(costDifference, 2)}. Are you okay with this?` :
+                            `You will be refunded Rs.${Math.abs(Math.round(costDifference, 2))}.`
                         }
                     </p>
                     <button onClick={handleConfirmSubscription}>Confirm</button>
