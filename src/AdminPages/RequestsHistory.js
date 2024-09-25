@@ -18,14 +18,14 @@ function RequestsHistory() {
         const updatedRequests = await Promise.all(
           requests.map(async (request) => {
             // Fetch user details by userId
-            const userResponse = await axios.get(`http://localhost:8082/userdetails?userId=${request.userId}`, { withCredentials: true });
+            const userResponse = await axios.get(process.env.REACT_APP_BACKEND_URL+`/userdetails?userId=${request.userId}`, { withCredentials: true });
             const userName = userResponse.data.username; // Assuming 'username' is the field
 
             // Fetch service details by serviceId based on serviceType and filter for inactive services (active: false)
             let serviceName, serviceCriteria, serviceActive, type;
 
             if (request.serviceType === "INTERNET_SERVICE") {
-              const serviceResponse = await axios.get(`http://localhost:8082/api/internet-services/${request.serviceId}`, { withCredentials: true });
+              const serviceResponse = await axios.get(process.env.REACT_APP_BACKEND_URL+`/api/internet-services/${request.serviceId}`, { withCredentials: true });
               serviceName = serviceResponse.data.serviceName;
               serviceCriteria = serviceResponse.data.criteria;
               type = serviceResponse.data.serviceType;
@@ -33,7 +33,7 @@ function RequestsHistory() {
             }
 
             if (request.serviceType === "TV_SERVICE") {
-              const serviceResponse = await axios.get(`http://localhost:8082/api/tv-services/${request.serviceId}`, { withCredentials: true });
+              const serviceResponse = await axios.get(process.env.REACT_APP_BACKEND_URL+`/api/tv-services/${request.serviceId}`, { withCredentials: true });
               serviceName = serviceResponse.data.serviceName;
               serviceCriteria = serviceResponse.data.criteria;
               type = serviceResponse.data.serviceType;
