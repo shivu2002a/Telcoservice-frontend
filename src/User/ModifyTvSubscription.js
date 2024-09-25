@@ -110,7 +110,7 @@ const ModifyTVSubscription = () => {
             console.log('Terminating old service...');
             await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms delay
 
-            const apiUrl = `http://localhost:8082/user/api/tv-service`;
+            const apiUrl = process.env.REACT_APP_BACKEND_URL+`/user/api/tv-service`;
             const requestBody = {
                 startDate: currentService.startDate,
                 endDate: currentService.endDate || null,

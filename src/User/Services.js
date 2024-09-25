@@ -57,8 +57,8 @@ const handleAlertCancel = () => {
     const fetchServiceDetails = async (serviceId, isInternetService) => {
         try {
             const endpoint = isInternetService
-                ? `http://localhost:8082/api/internet-services/${serviceId}`
-                : `http://localhost:8082/api/tv-services/${serviceId}`;
+                ? process.env.REACT_APP_BACKEND_URL+`/api/internet-services/${serviceId}`
+                : process.env.REACT_APP_BACKEND_URL+`/api/tv-services/${serviceId}`;
             const response = await axios.get(endpoint, { withCredentials: true });
             return response.data; // Assuming response data includes serviceName
         } catch (error) {

@@ -14,7 +14,7 @@ function UpdateInternetServices() {
     const { serviceId } = location.state;
 
     useEffect(() => {
-        axios.get(`http://localhost:8082/api/internet-services/${serviceId}`, { withCredentials: true })
+        axios.get(process.env.REACT_APP_BACKEND_URL+`/api/internet-services/${serviceId}`, { withCredentials: true })
             .then(response => {
                 setInternetService(response.data);
                 setLoading(false);
@@ -39,7 +39,7 @@ function UpdateInternetServices() {
             criteria: internetService.criteria,
             validity: internetService.validity,
         };
-        axios.patch(`http://localhost:8082/admin/api/internet-service`, updatedData, { withCredentials: true })
+        axios.patch(process.env.REACT_APP_BACKEND_URL+`/admin/api/internet-service`, updatedData, { withCredentials: true })
             .then(response => {
                 console.log("Service updated:", response.data);
                 setAlertMessage("Service updated successfully!");

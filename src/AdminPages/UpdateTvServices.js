@@ -14,7 +14,7 @@ function UpdateTvServices() {
     const { serviceId } = location.state;
 
     useEffect(() => {
-        axios.get(`http://localhost:8082/api/tv-services/${serviceId}`, { withCredentials: true })
+        axios.get(process.env.REACT_APP_BACKEND_URL+`/api/tv-services/${serviceId}`, { withCredentials: true })
             .then(response => {
                 setTvService(response.data);
                 setLoading(false);
@@ -37,7 +37,7 @@ function UpdateTvServices() {
             serviceType: tvService.serviceType,
             validity: tvService.validity,
         };
-        axios.patch(`http://localhost:8082/admin/api/tv-service`, updatedData, { withCredentials: true })
+        axios.patch(process.env.REACT_APP_BACKEND_URL+`/admin/api/tv-service`, updatedData, { withCredentials: true })
             .then(response => {
                 console.log("Service updated:", response.data);
                 setAlertMessage("Service updated successfully!");

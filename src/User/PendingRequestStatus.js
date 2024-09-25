@@ -40,7 +40,7 @@ const PendingRequestStatus = () => {
 
                     const fetchInternetDetails = async () => {
                         const detailsPromises = internetServiceIds.map(serviceId => 
-                            axios.get(`http://localhost:8082/api/internet-services/${serviceId}`, { withCredentials: true })
+                            axios.get(process.env.REACT_APP_BACKEND_URL+`/api/internet-services/${serviceId}`, { withCredentials: true })
                         );
                         const responses = await Promise.all(detailsPromises);
                         const details = responses.reduce((acc, response) => {
@@ -52,7 +52,7 @@ const PendingRequestStatus = () => {
 
                     const fetchTvDetails = async () => {
                         const detailsPromises = tvServiceIds.map(serviceId => 
-                            axios.get(`http://localhost:8082/api/tv-services/${serviceId}`, { withCredentials: true })
+                            axios.get(process.env.REACT_APP_BACKEND_URL+`/api/tv-services/${serviceId}`, { withCredentials: true })
                         );
                         const responses = await Promise.all(detailsPromises);
                         const details = responses.reduce((acc, response) => {

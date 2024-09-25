@@ -24,7 +24,7 @@ function ManageServices() {
   // Fetching internet services
   useEffect(() => {
     axios
-      .get(`http://localhost:8082/admin/api/internet-service`, { withCredentials: true })
+      .get(process.env.REACT_APP_BACKEND_URL+`/admin/api/internet-service`, { withCredentials: true })
       .then(response => {
         setInternetServices(response.data);
       })
@@ -36,7 +36,7 @@ function ManageServices() {
   // Fetching TV services
   useEffect(() => {
     axios
-      .get(`http://localhost:8082/admin/api/tv-service`, { withCredentials: true })
+      .get(process.env.REACT_APP_BACKEND_URL+`/admin/api/tv-service`, { withCredentials: true })
       .then(response => {
         setTvServices(response.data);
         setLoading(false);
@@ -62,8 +62,8 @@ function ManageServices() {
 
   const handleTerminateService = (serviceId, isTv) => {
     const apiEndpoint = isTv 
-      ? `http://localhost:8082/admin/api/tv-service?id=${serviceId}`
-      : `http://localhost:8082/admin/api/internet-service?id=${serviceId}`;
+      ? process.env.REACT_APP_BACKEND_URL+`/admin/api/tv-service?id=${serviceId}`
+      : process.env.REACT_APP_BACKEND_URL+`/admin/api/internet-service?id=${serviceId}`;
 
     axios
       .delete(apiEndpoint, { withCredentials: true })

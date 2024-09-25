@@ -11,7 +11,7 @@ function PendingRequests() {
 
   const fetchUserDetails = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:8082/userdetails?userId=${userId}`, { withCredentials: true });
+      const response = await axios.get(process.env.REACT_APP_BACKEND_URL+`/userdetails?userId=${userId}`, { withCredentials: true });
       return response.data || 'Unknown User';  // Provide a fallback value
     } catch (error) {
       console.error(`Error fetching user details for userId: ${userId}`, error);
@@ -22,8 +22,8 @@ function PendingRequests() {
   const fetchServiceDetails = async (serviceId, serviceType) => {
     try {
       const endpoint = serviceType === 'INTERNET_SERVICE'
-        ? `http://localhost:8082/api/internet-services/${serviceId}`
-        : `http://localhost:8082/api/tv-services/${serviceId}`;
+        ? process.env.REACT_APP_BACKEND_URL+`/api/internet-services/${serviceId}`
+        : process.env.REACT_APP_BACKEND_URL+`/api/tv-services/${serviceId}`;
       const response = await axios.get(endpoint, { withCredentials: true });
       const serviceData = response.data;
       return {
