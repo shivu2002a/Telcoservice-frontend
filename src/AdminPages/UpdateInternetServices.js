@@ -41,7 +41,7 @@ function UpdateInternetServices() {
         };
         axios.patch(process.env.REACT_APP_BACKEND_URL+`/admin/api/internet-service`, updatedData, { withCredentials: true })
             .then(response => {
-                console.log("Service updated:", response.data);
+                
                 setAlertMessage("Service updated successfully!");
                 setShowAlert(true);
             })

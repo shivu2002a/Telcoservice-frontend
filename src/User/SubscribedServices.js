@@ -143,7 +143,7 @@ const SubscribedServices = () => {
                                                         This service will activate after your current service ends on {new Date(service.startDate).toLocaleDateString()}.
                                                     </p>
                                                 )}
-                                                <p className="plan-cost">${service.internetService.cost}</p>
+                                                <p className="plan-cost">Rs.{service.internetService.cost}</p>
                                                 <div className='buttons'>
                                                     <button onClick={() => handleModifyInternet(service.internetService.serviceName)} className="btn modify-button">
                                                         Modify Service
@@ -180,7 +180,7 @@ const SubscribedServices = () => {
                                                         This service will activate after your current service ends on {new Date(service.startDate).toLocaleDateString()}.
                                                     </p>
                                                 )}
-                                                <p className="plan-cost">${service.tvService.cost}</p>
+                                                <p className="plan-cost">Rs.{service.tvService.cost}</p>
                                                 <div className='buttons'>
                                                     <button onClick={() => handleModifyTv(service.tvService.serviceName)} className="btn modify-button">
                                                         Modify Service
@@ -218,7 +218,7 @@ const SubscribedServices = () => {
                                             <p><strong>Description:</strong> {service.internetService.description}</p>
                                             <p><strong>Start Date:</strong> {new Date(service.startDate).toLocaleDateString()}</p>
                                             <p><strong>End Date:</strong> {new Date(service.endDate).toLocaleDateString()}</p>
-                                            <p className="plan-cost">${service.internetService.cost}</p>
+                                            <p className="plan-cost">Rs.{service.internetService.cost}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -239,7 +239,7 @@ const SubscribedServices = () => {
                                             <p><strong>Description:</strong> {service.tvService.description}</p>
                                             <p><strong>Start Date:</strong> {new Date(service.startDate).toLocaleDateString()}</p>
                                             <p><strong>End Date:</strong> {new Date(service.endDate).toLocaleDateString()}</p>
-                                            <p className="plan-cost">${service.tvService.cost}</p>
+                                            <p className="plan-cost">Rs.{service.tvService.cost}</p>
                                         </div>
                                     ))}
                                 </div>

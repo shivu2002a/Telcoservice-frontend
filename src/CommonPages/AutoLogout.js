@@ -15,7 +15,7 @@ const AutoLogout = ({ setIsUser, setIsAdmin }) => {
 
   // Reset the logout timer
   const resetTimer = () => {
-    console.log('User activity detected. Resetting timer...');
+    
     if (logoutTimer.current) {
       clearTimeout(logoutTimer.current);
     }

@@ -17,8 +17,8 @@ const ServiceCard = ({ service, isSubscribed, isRequested, onSubscribe, isButton
             <p><strong>Benefits:</strong> {service.benefits}</p>
             {service.serviceDownloadSpeed && (
                 <div className="speed-info">
-                    <p><strong>Download Speed:</strong> {service.serviceDownloadSpeed} Mbps</p>
-                    <p><strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
+                    <p><span className="icon">⬇️</span><strong>Download Speed:</strong> {service.serviceDownloadSpeed} Mbps</p>
+                    <p><span className="icon">⬆️</span><strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
                 </div>
             )}
             <p className="plan-cost">Rs.{service.cost}</p>

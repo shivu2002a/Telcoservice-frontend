@@ -25,7 +25,7 @@ function Services() {
 const handleAlertOk = () => {
     setShowAlert(false);  // Close the alert
     if (onAlertOk) {
-        console.log("OK clicked"); 
+         
         onAlertOk();  // Execute the callback (navigate)
         setOnAlertOk(null);  // Reset callback to avoid repeated execution
     }
@@ -39,7 +39,7 @@ const handleAlertCancel = () => {
     // Fetch services data
     const fetchServices = useCallback(async () => {
         try {
-            console.log('Fetching services...');
+            
             const [internetResponse, tvResponse] = await Promise.all([
                 axios.get(process.env.REACT_APP_BACKEND_URL+'/api/internet-services/', { withCredentials: true }),
                 axios.get(process.env.REACT_APP_BACKEND_URL+'/api/tv-services/', { withCredentials: true }),
@@ -69,7 +69,7 @@ const handleAlertCancel = () => {
     
     const fetchSubscribedServices = useCallback(async () => {
         try {
-            console.log('Fetching subscribed services...');
+            
             const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/subscribed-services', { withCredentials: true });
             const { internetServicesAvailed, tvServicesAvailed } = response.data;
     
@@ -86,8 +86,8 @@ const handleAlertCancel = () => {
             const processedTvServices = await fetchAllServiceDetails(tvServicesAvailed || [], false);
     
             // Log the processed data
-            console.log('Processed Internet Services:', processedInternetServices);
-            console.log('Processed TV Services:', processedTvServices);
+            
+            
     
             setSubscribedInternetServices(processedInternetServices);
             setSubscribedTvServices(processedTvServices);
@@ -103,9 +103,9 @@ const handleAlertCancel = () => {
     // Fetch pending requests
     const fetchPendingRequests = useCallback(async () => {
         try {
-            console.log('Fetching pending requests...');
+            
             const response = await axios.get(process.env.REACT_APP_BACKEND_URL+'/user/api/pending-request', { withCredentials: true });
-            console.log('Pending requests data:', response.data);
+            
 
             setPendingRequests(response.data || []);
         } catch (err) {
@@ -151,7 +151,7 @@ const handleAlertCancel = () => {
             request.serviceType === serviceTypeKey && request.requestStatus === 'REQUESTED'
         ).length;
 
-        console.log(`Requested count for ${isInternetService ? 'Internet' : 'TV'} services: ${requestedCount}`);
+        
         return requestedCount;
     };
 
@@ -161,12 +161,12 @@ const handleAlertCancel = () => {
             : process.env.REACT_APP_BACKEND_URL+'/user/api/tv-service';
     
         try {
-            console.log('Sending request to subscribe to:', apiUrl);
+            
             await axios.post(apiUrl, null, {
                 params: { serviceId },
                 withCredentials: true,
             });
-            console.log('Request sent successfully for:', serviceId);
+            
     
             const service = isInternetService ? internetServices.find(s => s.serviceId === serviceId) : tvServices.find(s => s.serviceId === serviceId);
             
@@ -234,7 +234,7 @@ const handleAlertCancel = () => {
     
 
     const sameNameServiceSubscribed = (serviceName, serviceType, isInternetService) => {
-        console.log(`Checking for serviceName: ${serviceName} in ${isInternetService ? 'Internet' : 'TV'} services`);
+        
     
         // Combine internet and TV subscribed services
         const allSubscribedServices = [
@@ -244,7 +244,7 @@ const handleAlertCancel = () => {
     
         // Log subscribed services for debugging
         allSubscribedServices.forEach(service => {
-            console.log(`Subscribed service: ${service.serviceName}, Type: ${service.serviceType}, Active: ${service.active}`);
+            
         });
     
         // Check if any service has the same name but a different type
@@ -253,10 +253,10 @@ const handleAlertCancel = () => {
         );
     
         if (foundService) {
-            console.log(`Found subscribed service with the same name but different type: ${foundService.serviceName}, Type: ${foundService.serviceType}`);
+            
             return true;
         } else {
-            console.log('No service with the same name but different type found.');
+            
             return false;
         }
     };
@@ -304,7 +304,7 @@ const handleAlertCancel = () => {
                 if(totalSubscribed===0)
                     navigate('/user/pending-requests');
                 else{
-                console.log("Navigating to subscribed services"); 
+                 
                 navigate('/user/subscribed-services');
                 }
             }

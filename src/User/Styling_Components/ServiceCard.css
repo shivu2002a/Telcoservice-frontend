@@ -44,7 +44,7 @@
     border-radius: 8px;
     width: calc(25%); /* Match the width of a service box */
     padding: 20px;
-    height: 350px!important;
+    height: 425px!important;
 
     display: flex;
     justify-content: center;

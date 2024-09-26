@@ -39,7 +39,7 @@ function UpdateTvServices() {
         };
         axios.patch(process.env.REACT_APP_BACKEND_URL+`/admin/api/tv-service`, updatedData, { withCredentials: true })
             .then(response => {
-                console.log("Service updated:", response.data);
+                
                 setAlertMessage("Service updated successfully!");
                 setShowAlert(true);
             })

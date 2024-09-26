@@ -106,7 +106,7 @@ const ModifyInternetSubscription = () => {
         }
 
         try {
-            console.log('Terminating old service...');
+            
             await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms delay
 
             const apiUrl = process.env.REACT_APP_BACKEND_URL+`/user/api/internet-service`;
@@ -117,7 +117,7 @@ const ModifyInternetSubscription = () => {
                 newServiceId: newServiceToSubscribe.serviceId,
             };
 
-            console.log('Subscribe - Request Body:', requestBody);
+            
 
             const response = await axios.put(apiUrl, requestBody, { 
                 headers: {
@@ -126,7 +126,7 @@ const ModifyInternetSubscription = () => {
                 withCredentials: true
             });
 
-            console.log('Subscription Update Response:', response);
+            
 
             if (response.status === 200 || response.status === 204) {
                 setSuccessDialog(true); // Show success dialog
@@ -216,7 +216,7 @@ const ModifyInternetSubscription = () => {
                                     <p><span className="icon">⬇️</span> <strong>Download Speed:</strong> {service.serviceDownloadSpeed} Mbps</p>
                                     <p><span className="icon">⬆️</span> <strong>Upload Speed:</strong> {service.serviceUploadSpeed} Mbps</p>
                                 </div>
-                                <p className="plan-cost">${service.cost}</p>
+                                <p className="plan-cost">Rs.{service.cost}</p>
                                 <button className="subscribe-button" onClick={() => handleSubscribe(service)}>Modify Subscription</button>
                             </div>
                         )
@@ -230,13 +230,13 @@ const ModifyInternetSubscription = () => {
             {confirmDialog && (
                 <div style={dialogStyle}>
                     <h3>Confirm Subscription Update</h3>
-                    <p><strong>Current Service Cost:</strong> ${currentService.internetService.cost || 'N/A'}</p>
-                    <p><strong>New Service Cost:</strong> ${newServiceToSubscribe.cost || 'N/A'}</p>
-                    <p><strong>Cost Difference:</strong> ${Math.round(costDifference, 2)}</p>
+                    <p><strong>Current Service Cost:</strong> Rs.{currentService.internetService.cost || 'N/A'}</p>
+                    <p><strong>New Service Cost:</strong> Rs.{newServiceToSubscribe.cost || 'N/A'}</p>
+                    <p><strong>Cost Difference:</strong> Rs.{Math.round(costDifference, 2)}</p>
                     <p>
                         {costDifference > 0 ? 
-                            `You will need to pay an additional $${Math.round(costDifference, 2)}. Are you okay with this?` :
-                            `You will be refunded $${Math.abs(Math.round(costDifference, 2))}.`
+                            `You will need to pay an additional Rs.${Math.round(costDifference, 2)}. Are you okay with this?` :
+                            `You will be refunded Rs.${Math.abs(Math.round(costDifference, 2))}.`
                         }
                     </p>
                     <button style={buttonStyle} onClick={handleConfirmSubscription}>Confirm</button>
