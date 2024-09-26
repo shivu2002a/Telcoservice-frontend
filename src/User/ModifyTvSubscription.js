@@ -107,7 +107,7 @@ const ModifyTVSubscription = () => {
         }
 
         try {
-            console.log('Terminating old service...');
+            
             await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms delay
 
             const apiUrl = process.env.REACT_APP_BACKEND_URL+`/user/api/tv-service`;
@@ -118,7 +118,7 @@ const ModifyTVSubscription = () => {
                 newServiceId: newServiceToSubscribe.serviceId,
             };
 
-            console.log('Subscribe - Request Body:', requestBody);
+            
 
             const response = await axios.put(apiUrl, requestBody, { 
                 headers: {
@@ -127,7 +127,7 @@ const ModifyTVSubscription = () => {
                 withCredentials: true
             });
 
-            console.log('Subscription Update Response:', response);
+            
 
             if (response.status === 200 || response.status === 204) {
                 setSuccessDialog(true); // Show success dialog
@@ -199,7 +199,7 @@ const ModifyTVSubscription = () => {
                                 <p><strong>Type:</strong> {service.serviceType}</p>
                                 <p><strong>Description:</strong> {service.description}</p>
                                 <p><strong>Benefits:</strong> {service.benefits}</p>
-                                <p className="plan-cost">${service.cost}</p>
+                                <p className="plan-cost">Rs.{service.cost}</p>
                                 <button className="subscribe-button" onClick={() => handleSubscribe(service)}>Modify Subscription</button>
                             </div>
                         )
@@ -213,9 +213,9 @@ const ModifyTVSubscription = () => {
             {confirmDialog && (
                 <div style={dialogStyle}>
                     <h3>Confirm Subscription Update</h3>
-                    <p><strong>Current Service Cost:</strong> ${currentService.tvService.cost || 'N/A'}</p>
-                    <p><strong>New Service Cost:</strong> ${newServiceToSubscribe.cost || 'N/A'}</p>
-                    <p><strong>Cost Difference:</strong> ${Math.round(costDifference, 2)}</p>
+                    <p><strong>Current Service Cost:</strong> Rs.{currentService.tvService.cost || 'N/A'}</p>
+                    <p><strong>New Service Cost:</strong> Rs.{newServiceToSubscribe.cost || 'N/A'}</p>
+                    <p><strong>Cost Difference:</strong> Rs.{Math.round(costDifference, 2)}</p>
                     <p>
                         {costDifference > 0 ? 
                             `You will need to pay an additional Rs.${Math.round(costDifference, 2)}. Are you okay with this?` :

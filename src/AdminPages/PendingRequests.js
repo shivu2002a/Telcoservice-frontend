@@ -90,8 +90,8 @@ function PendingRequests() {
     try {
       const user = await fetchUserDetails(request.userId);
       const service = await fetchServiceDetails(request.serviceId, request.serviceType);
-      console.log(service);
-      console.log(`vfrom test ${user}`);
+      
+      
       // Provide fallback values if service or user data is missing
       navigate('/admin/validation', { 
         state: { 

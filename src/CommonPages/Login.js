@@ -74,7 +74,7 @@ const Login = ({ setIsUser, setIsAdmin }) => {
         }
       } catch (error) {
         // Log the error for debugging
-        console.log('Login error:', error.response || error.message);
+        
     
         // Handle specific error responses based on status codes
         if (error.response) {
